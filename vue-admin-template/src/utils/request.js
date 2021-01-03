@@ -24,7 +24,7 @@ service.interceptors.request.use(
       // config.headers['Access-Control-Allow-Headers'] = 'token'
       // config.headers['Access-Control-Allow-Origin'] = 'http://127.0.0.1:9528'
       // config.headers['Access-Control-Allow-Credentials'] = 'true'
-      console.log(config.headers)
+      // console.log(config.headers)
     }
     return config
   },

@@ -6,14 +6,14 @@ from rest_framework import status
 from rest_framework.parsers import JSONParser
 from rest_framework_jwt.serializers import jwt_payload_handler, jwt_encode_handler
 from rest_framework import permissions
-from mongo.utils import get_all,get_by_name
+from mongo.utils import getAll,getByName,getOrganizationName
 
 class GetAllInfo(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request):
         res = {}
-        res["count"]=get_all()
+        res["count"]=getAll()
         res["code"] = 20000
         return Response(res)
 
@@ -24,7 +24,17 @@ class GetByName(APIView):
     def get(self, request):
         res = {}
         name = request.GET['name']
-        res["count"]= get_by_name(name)
+        res["count"]= getByName(name)
         res["code"] = 20000
         res["name"] = name
+        return Response(res)
+
+
+class GetOrganizationName(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request):
+        res = {}
+        res["data"]= getOrganizationName()
+        res["code"] = 20000
         return Response(res)
