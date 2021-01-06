@@ -57,36 +57,36 @@ export const constantRoutes = [
   {
     path: '/',
     component: Layout,
-    redirect: '/xpath',
+    redirect: '/updateAll',
     children: [{
-      path: 'xpath',
-      name: 'AcXpath',
-      component: () => import('@/views/main/AcXpath'),
-      meta: { title: '学者详情更新', icon: 'table' }
+      path: 'updateAll',
+      name: 'updateAll',
+      component: () => import('@/views/main/updateAll'),
+      meta: { title: '学者详情更新', icon: 'el-icon-refresh' }
     }]
   },
-  // {
-  //   path: '/',
-  //   component: Layout,
-  //   redirect: '/xpath',
-  //   children: [{
-  //     path: 'xpath',
-  //     name: 'AcXpath',
-  //     component: () => import('@/views/main/AcXpath'),
-  //     meta: { title: '学者详情新增', icon: 'table' }
-  //   }]
-  // },
-  // {
-  //   path: '/',
-  //   component: Layout,
-  //   redirect: '/xpath',
-  //   children: [{
-  //     path: 'xpath',
-  //     name: 'AcXpath',
-  //     component: () => import('@/views/main/AcXpath'),
-  //     meta: { title: '选择高校更新', icon: 'table' }
-  //   }]
-  // },
+  {
+    path: '/',
+    component: Layout,
+    redirect: '/updateByXpath',
+    children: [{
+      path: 'updateByXpath',
+      name: 'updateByXpath',
+      component: () => import('@/views/main/updateByXpath'),
+      meta: { title: '学者详情新增', icon: 'el-icon-circle-plus' }
+    }]
+  },
+  {
+    path: '/',
+    component: Layout,
+    redirect: '/updateByOrganization',
+    children: [{
+      path: 'updateByOrganization',
+      name: 'updateByOrganization',
+      component: () => import('@/views/main/updateByOrganization'),
+      meta: { title: '选择高校更新', icon: 'el-icon-school' }
+    }]
+  },
   {
     path: '/',
     component: Layout,
@@ -95,7 +95,7 @@ export const constantRoutes = [
       path: 'search',
       name: 'Search',
       component: () => import('@/views/main/search'),
-      meta: { title: '数据统计', icon: 'excel' }
+      meta: { title: '数据统计', icon: 'el-icon-s-data' }
     }]
   },
   // 404 page must be placed at the end !!!

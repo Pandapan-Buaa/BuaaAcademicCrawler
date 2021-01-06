@@ -6,4 +6,5 @@ urlpatterns = [
     url(r'^getAll/$', views.GetAllInfo.as_view()),
     url(r'^getByName/$', views.GetByName.as_view()),
     url(r'^getOrganization/$', views.GetOrganizationName.as_view()),
+    url(r'^file/$', views.XpathFileList.as_view()),
 ]

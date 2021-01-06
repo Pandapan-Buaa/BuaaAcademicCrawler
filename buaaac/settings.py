@@ -187,3 +187,10 @@ CORS_ALLOW_HEADERS = (
  'x-requested-with',
  'Pragma',
 )
+
+
+FONT_DIR = os.path.dirname(BASE_DIR) + r"\buaaac\vue-admin-template\dist\static"
+MEDIA_ROOT = os.path.join(FONT_DIR, 'media')
+MEDIA_URL = '/media/'
+X_FRAME_OPTIONS = 'ALLOWALL'
+XS_SHARING_ALLOWED_METHODS = ['POST','GET','OPTIONS', 'PUT', 'DELETE']

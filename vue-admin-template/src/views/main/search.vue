@@ -1,43 +1,48 @@
 <template>
   <el-main>
-    <el-row type="flex" justify="center" class="data">
-      <el-col :span="8">
-        <el-card class="box-card">
-          <div slot="header" class="clearfix">
-            <span>相关数据</span>
-            <!--          <el-button style="float: right; padding: 3px 0" type="text" icon="el-icon-search">操作按钮</el-button>-->
-          </div>
-          <div v-for="(value, key) in data" :key="key" class="text item">
-            {{ key }}:{{ value }}
-          </div>
-        </el-card>
-      </el-col>
-    </el-row>
-    <el-row class="search">
-      <el-col :span="4" :offset="8">
-        <el-select
-          v-model="value"
-          multiple
-          filterable
-          remote
-          reserve-keyword
-          placeholder="请输入关键词"
-          :remote-method="remoteMethod"
-          :loading="loading"
-        >
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
+    <div style="margin-bottom: 20px">
+      <el-row class="search">
+        <el-col :span="4" >
+          <el-select
+            v-model="value"
+            multiple
+            filterable
+            remote
+            reserve-keyword
+            placeholder="请输入待查询高校名称"
+            :remote-method="remoteMethod"
+            :loading="loading"
+          >
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
 
-      </el-col>
-      <el-col :span="4" :offset="1">
-        <el-button type="primary" icon="el-icon-search" @click="searchOrganazationCount">搜索</el-button>
-      </el-col>
-    </el-row>
+        </el-col>
+        <el-col :span="4">
+          <el-button type="primary" icon="el-icon-search" @click="searchOrganazationCount">搜索</el-button>
+        </el-col>
+      </el-row>
+    </div>
+    <el-table
+      :data="tableData"
+      stripe
+      style="width: 100%"
+    >
+      <el-table-column
+        prop="name"
+        label="查询名称"
+        width="180"
+      />
+      <el-table-column
+        prop="count"
+        label="已爬取数量"
+      />
+    </el-table>
+
   </el-main>
 </template>
 
@@ -53,9 +58,10 @@ export default {
   },
   data() {
     return {
-      data: {
-        数据总数: 0
-      },
+      tableData: [{
+        name: '数据总数',
+        count: 0
+      }],
       options: [],
       value: [],
       list: [],
@@ -78,7 +84,7 @@ export default {
     })
 
     getAllData(this.token).then(response => {
-      this.data.数据总数 = response['count']
+      this.tableData[0].count = response['count']
     }).catch(error => {
     })
   },
@@ -99,14 +105,24 @@ export default {
     },
     searchOrganazationCount() {
       for (let i = 0; i < this.value.length; i++) {
-        console.log(i)
         searchOrganizationData(this.token, this.value[i]).then(response => {
-          console.log(response)
-          this.$set(this.data, this.value[i], response['count'])
-          // this.data[this.value[0]] = response['count']
+          this.tableData.push({ name: this.value[i], count: response['count'] })
+          this.unique(this.tableData)
         }).catch(error => {
           // console.log(error.message)
         })
+      }
+    },
+    unique(obj) {
+      // 去掉重复选取的数据
+      for (var i = 0; i < obj.length; i++) {
+        for (var j = i + 1; j < obj.length;) {
+          if (obj[i].name === obj[j].name) { // 通过photoid属性进行匹配；
+            obj.splice(j, 1)// 去除重复的对象；
+          } else {
+            j++
+          }
+        }
       }
     }
   }
