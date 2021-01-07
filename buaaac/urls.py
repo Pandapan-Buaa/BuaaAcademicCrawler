@@ -30,4 +30,5 @@ urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name="index.html")),
     path('api/user/', include('user.urls')),
     path('api/mongo/', include('mongo.urls')),
+    path('api/crawler/', include('crawler.urls')),
 ]

@@ -20,6 +20,7 @@
       <sourceFolder url="file://$MODULE_DIR$/user" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/utils" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/mongo" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/crawler" isTestSource="false" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.7 (django)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />

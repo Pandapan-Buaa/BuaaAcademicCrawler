@@ -45,23 +45,3 @@ class GetOrganizationName(APIView):
         return Response(res)
 
 
-class XpathFileList(APIView):
-    permission_classes = (permissions.IsAuthenticated,)
-    def get(self,request):
-        res = []
-        for root, dirs, files in os.walk(settings.MEDIA_ROOT):
-            print(files)  # 当前路径下所有非目录子文件
-            res = files
-        return Response(res,status=status.HTTP_200_OK)
-
-    @csrf_exempt
-    def post(self, request):
-        file = request.FILES['file']
-        print(settings.MEDIA_ROOT)
-        save_path = "%s\\xpath\\%s" % (settings.MEDIA_ROOT, str(time.time()) + file.name,)
-        print(save_path)
-        with open(save_path, "wb") as f:
-            for content in file.chunks():
-                f.write(content)
-        f.close()
-        return Response(status=status.HTTP_200_OK)
