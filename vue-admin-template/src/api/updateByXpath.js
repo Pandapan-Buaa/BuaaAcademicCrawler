@@ -24,3 +24,17 @@ export function crawlerStatus() {
     method: 'get'
   })
 }
+
+
+export function imgCrawler() {
+  return request({
+    url: '/imgCrawler/',
+    method: 'get'
+  })
+}
+export function imgCrawlerStatus() {
+  return request({
+    url: '/imgCrawler_status/',
+    method: 'get'
+  })
+}

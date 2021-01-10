@@ -33,20 +33,60 @@
             <!--            <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>-->
             <div slot="tip" class="el-upload__tip">请上传包含xpath的txt文件</div>
           </el-upload>
-          <div class="text item">处理进度<div v-if="configStatu!=0">共有{{ configSize }}条xpath数据</div></div>
+          <div class="text item">导入xpath，处理进度<div v-if="configStatu!=0">共有{{ configSize }}条xpath数据</div></div>
           <el-progress :text-inside="true" :stroke-width="20" :percentage="configStatu" status="success" class="progress" />
-          <el-button v-if="active==1" class="next-button" :disabled="configNextBtn" @click="next">下一步</el-button>
-          <el-button v-if="active==1" class="exc-button" :disabled="configExcBtn" @click="axiosLoadConfig">执行</el-button>
+          <el-button class="next-button" :disabled="debug && configNextBtn" @click="next">下一步</el-button>
+          <el-button class="exc-button" :disabled="configExcBtn" @click="axiosLoadConfig">执行</el-button>
         </el-card>
       </el-col>
     </el-row>
     <el-row v-if="active==2" type="flex" justify="left" class="active">
       <el-col :span="12">
         <el-card class="box-card">
-          <div class="text item">处理进度<div v-if="crawlerStatu!=0">共有{{ crawlerSize }}条数据</div></div>
+          <div class="text item">更新学者路径，处理进度<div v-if="crawlerStatu!=0">共有{{ crawlerSize }}条数据</div></div>
           <el-progress :text-inside="true" :stroke-width="20" :percentage="crawlerStatu" status="success" class="progress" />
-          <el-button v-if="active==2" class="next-button" :disabled="crawlerNextBtn" @click="next">下一步</el-button>
-          <el-button v-if="active==2" class="exc-button" :disabled="crawlerExcBtn" @click="axiosCrawler">执行</el-button>
+          <el-button class="next-button" :disabled="debug && crawlerNextBtn" @click="next">下一步</el-button>
+          <el-button class="exc-button" :disabled="crawlerExcBtn" @click="axiosCrawler">执行</el-button>
+        </el-card>
+      </el-col>
+    </el-row>
+    <el-row v-if="active==3" type="flex" justify="left" class="active">
+      <el-col :span="12">
+        <el-card class="box-card">
+          <div class="text item">处理特殊数据，处理进度<div v-if="imgCrawlerStatu!=0">共有{{ imgCrawlerSize }}条数据</div></div>
+          <el-progress :text-inside="true" :stroke-width="20" :percentage="imgCrawlerStatu" status="success" class="progress" />
+          <el-button class="next-button" :disabled="debug && imgCrawlerNextBtn" @click="next">下一步</el-button>
+          <el-button class="exc-button" :disabled="imgCrawlerExcBtn" @click="axiosImgCrawler">执行</el-button>
+        </el-card>
+      </el-col>
+    </el-row>
+    <el-row v-if="active==4" type="flex" justify="left" class="active">
+      <el-col :span="12">
+        <el-card class="box-card">
+          <div class="text item">更新详情，处理进度<div v-if="imgCrawlerStatu!=0">共有{{ imgCrawlerSize }}条数据</div></div>
+          <el-progress :text-inside="true" :stroke-width="20" :percentage="imgCrawlerStatu" status="success" class="progress" />
+          <el-button class="next-button" :disabled="debug && imgCrawlerNextBtn" @click="next">下一步</el-button>
+          <el-button class="exc-button" :disabled="imgCrawlerExcBtn" @click="axiosImgCrawler">执行</el-button>
+        </el-card>
+      </el-col>
+    </el-row>
+    <el-row v-if="active==5" type="flex" justify="left" class="active">
+      <el-col :span="12">
+        <el-card class="box-card">
+          <div class="text item">更新反爬虫详情，处理进度<div v-if="imgCrawlerStatu!=0">共有{{ imgCrawlerSize }}条数据</div></div>
+          <el-progress :text-inside="true" :stroke-width="20" :percentage="imgCrawlerStatu" status="success" class="progress" />
+          <el-button class="next-button" :disabled="debug && imgCrawlerNextBtn" @click="next">下一步</el-button>
+          <el-button class="exc-button" :disabled="imgCrawlerExcBtn" @click="axiosImgCrawler">执行</el-button>
+        </el-card>
+      </el-col>
+    </el-row>
+    <el-row v-if="active==6" type="flex" justify="left" class="active">
+      <el-col :span="12">
+        <el-card class="box-card">
+          <div class="text item">匹配学者信息，处理进度<div v-if="imgCrawlerStatu!=0">共有{{ imgCrawlerSize }}条数据</div></div>
+          <el-progress :text-inside="true" :stroke-width="20" :percentage="imgCrawlerStatu" status="success" class="progress" />
+          <el-button class="next-button" :disabled="debug && imgCrawlerNextBtn" @click="next">下一步</el-button>
+          <el-button class="exc-button" :disabled="imgCrawlerExcBtn" @click="axiosImgCrawler">执行</el-button>
         </el-card>
       </el-col>
     </el-row>
@@ -57,7 +97,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { getToken } from '@/utils/auth'
-import { loadConfig, loadConfigStatus, crawler, crawlerStatus } from '@/api/updateByXpath'
+import { loadConfig, loadConfigStatus, crawler, crawlerStatus, imgCrawler, imgCrawlerStatus } from '@/api/updateByXpath'
 export default {
   name: 'UpdateByXpath',
   computed: {
@@ -67,6 +107,7 @@ export default {
   },
   data() {
     return {
+      debug: false,
       active: 1,
       myHeaders: { 'Authorization': 'JWT ' + getToken() },
       configStatu: 0,
@@ -77,6 +118,10 @@ export default {
       crawlerSize: -1,
       crawlerNextBtn: true,
       crawlerExcBtn: false,
+      imgCrawlerStatu: 0,
+      imgCrawlerSize: -1,
+      imgCrawlerNextBtn: true,
+      imgCrawlerExcBtn: false,
       fileList: []
 
     }
@@ -123,6 +168,24 @@ export default {
         console.log(response)
       }).catch()
     },
+    refreshImgCrawlerStatus() {
+      imgCrawlerStatus().then(response => {
+        var str = response['data']
+        var obj = JSON.parse(str)
+        this.imgCrawlerStatu = obj.progress
+        this.imgCrawlerSize = obj.size
+        console.log(response)
+        if (obj.progress === 100) {
+          this.imgCrawlerNextBtn = false
+        }
+      }).catch()
+    },
+    axiosImgCrawler() {
+      this.imgCrawlerExcBtn = true
+      imgCrawler().then(response => {
+        console.log(response)
+      }).catch()
+    },
     next() {
       if (this.active++ > 5) {
         this.active = 1
@@ -132,7 +195,7 @@ export default {
         this.timer = setInterval(this.refreshCrawlerStatus, 1000)
       } else if (this.active === 3) {
         clearInterval(this.timer)
-        // this.timer = setInterval(this.refreshCrawlerStatus, 3000)
+        this.timer = setInterval(this.refreshImgCrawlerStatus, 1000)
       } else if (this.active === 4) {
         clearInterval(this.timer)
         // this.timer = setInterval(this.refreshCrawlerStatus, 3000)
