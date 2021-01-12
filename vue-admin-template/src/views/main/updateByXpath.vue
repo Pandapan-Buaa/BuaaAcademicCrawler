@@ -63,10 +63,10 @@
     <el-row v-if="active==4" type="flex" justify="left" class="active">
       <el-col :span="12">
         <el-card class="box-card">
-          <div class="text item">更新详情，处理进度<div v-if="imgCrawlerStatu!=0">共有{{ imgCrawlerSize }}条数据</div></div>
-          <el-progress :text-inside="true" :stroke-width="20" :percentage="imgCrawlerStatu" status="success" class="progress" />
-          <el-button class="next-button" :disabled="debug && imgCrawlerNextBtn" @click="next">下一步</el-button>
-          <el-button class="exc-button" :disabled="imgCrawlerExcBtn" @click="axiosImgCrawler">执行</el-button>
+          <div class="text item">更新详情，处理进度<div v-if="detailStatu!=0">共有{{ detailSize }}条数据</div></div>
+          <el-progress :text-inside="true" :stroke-width="20" :percentage="detailStatu" status="success" class="progress" />
+          <el-button class="next-button" :disabled="debug && detailNextBtn" @click="next">下一步</el-button>
+          <el-button class="exc-button" :disabled="detailExcBtn" @click="axiosDetail">执行</el-button>
         </el-card>
       </el-col>
     </el-row>
@@ -83,10 +83,10 @@
     <el-row v-if="active==6" type="flex" justify="left" class="active">
       <el-col :span="12">
         <el-card class="box-card">
-          <div class="text item">匹配学者信息，处理进度<div v-if="imgCrawlerStatu!=0">共有{{ imgCrawlerSize }}条数据</div></div>
-          <el-progress :text-inside="true" :stroke-width="20" :percentage="imgCrawlerStatu" status="success" class="progress" />
-          <el-button class="next-button" :disabled="debug && imgCrawlerNextBtn" @click="next">下一步</el-button>
-          <el-button class="exc-button" :disabled="imgCrawlerExcBtn" @click="axiosImgCrawler">执行</el-button>
+          <div class="text item">匹配学者信息，处理进度<div v-if="detailMatchStatu!=0">共有{{ detailMatchSize }}条数据</div></div>
+          <el-progress :text-inside="true" :stroke-width="20" :percentage="detailMatchStatu" status="success" class="progress" />
+          <el-button class="next-button" :disabled="debug && detailMatchNextBtn" @click="next">下一步</el-button>
+          <el-button class="exc-button" :disabled="detailMatchExcBtn" @click="axiosDetailMatch">执行</el-button>
         </el-card>
       </el-col>
     </el-row>
@@ -97,7 +97,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { getToken } from '@/utils/auth'
-import { loadConfig, loadConfigStatus, crawler, crawlerStatus, imgCrawler, imgCrawlerStatus } from '@/api/updateByXpath'
+import { loadConfig, loadConfigStatus, crawler, crawlerStatus, imgCrawler, imgCrawlerStatus , detail ,detailStatus ,detailMatch ,detailMatchStatus} from '@/api/updateByXpath'
 export default {
   name: 'UpdateByXpath',
   computed: {
@@ -122,6 +122,14 @@ export default {
       imgCrawlerSize: -1,
       imgCrawlerNextBtn: true,
       imgCrawlerExcBtn: false,
+      detailStatu: 0,
+      detailSize: -1,
+      detailNextBtn: true,
+      detailExcBtn: false,
+      detailMatchStatu: 0,
+      detailMatchSize: -1,
+      detailMatchNextBtn: true,
+      detailMatchExcBtn: false,
       fileList: []
 
     }
@@ -186,6 +194,42 @@ export default {
         console.log(response)
       }).catch()
     },
+    refreshDetailStatus() {
+      detailStatus().then(response => {
+        var str = response['data']
+        var obj = JSON.parse(str)
+        this.detailStatu = obj.progress
+        this.detailSize = obj.size
+        console.log(response)
+        if (obj.progress === 100) {
+          this.detailNextBtn = false
+        }
+      }).catch()
+    },
+    axiosDetail() {
+      this.detailExcBtn = true
+      detail().then(response => {
+        console.log(response)
+      }).catch()
+    },
+    refreshDetailMatchStatus() {
+      detailMatchStatus().then(response => {
+        var str = response['data']
+        var obj = JSON.parse(str)
+        this.detailMatchStatu = obj.progress
+        this.detailMatchSize = obj.size
+        // console.log(response)
+        if (obj.progress === 100) {
+          this.detailMatchNextBtn = false
+        }
+      }).catch()
+    },
+    axiosDetailMatch() {
+      this.detailMatchExcBtn = true
+      detailMatch().then(response => {
+        console.log(response)
+      }).catch()
+    },
     next() {
       if (this.active++ > 5) {
         this.active = 1
@@ -198,13 +242,13 @@ export default {
         this.timer = setInterval(this.refreshImgCrawlerStatus, 1000)
       } else if (this.active === 4) {
         clearInterval(this.timer)
-        // this.timer = setInterval(this.refreshCrawlerStatus, 3000)
+        this.timer = setInterval(this.refreshDetailStatus, 1000)
       } else if (this.active === 5) {
         clearInterval(this.timer)
         // this.timer = setInterval(this.refreshCrawlerStatus, 3000)
       } else if (this.active === 6) {
         clearInterval(this.timer)
-        // this.timer = setInterval(this.refreshCrawlerStatus, 3000)
+        this.timer = setInterval(this.refreshDetailMatchStatus, 1000)
       }
     },
     // submitUpload() {

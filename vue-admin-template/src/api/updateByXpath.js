@@ -25,7 +25,6 @@ export function crawlerStatus() {
   })
 }
 
-
 export function imgCrawler() {
   return request({
     url: '/imgCrawler/',
@@ -35,6 +34,30 @@ export function imgCrawler() {
 export function imgCrawlerStatus() {
   return request({
     url: '/imgCrawler_status/',
+    method: 'get'
+  })
+}
+export function detail() {
+  return request({
+    url: '/detail/',
+    method: 'get'
+  })
+}
+export function detailStatus() {
+  return request({
+    url: '/detail_status/',
+    method: 'get'
+  })
+}
+export function detailMatch() {
+  return request({
+    url: '/detail_match/',
+    method: 'get'
+  })
+}
+export function detailMatchStatus() {
+  return request({
+    url: '/detail_match_status/',
     method: 'get'
   })
 }
