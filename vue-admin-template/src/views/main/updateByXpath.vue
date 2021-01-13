@@ -65,6 +65,40 @@
         <el-card class="box-card">
           <div class="text item">更新详情，处理进度<div v-if="detailStatu!=0">共有{{ detailSize }}条数据</div></div>
           <el-progress :text-inside="true" :stroke-width="20" :percentage="detailStatu" status="success" class="progress" />
+          <el-table
+            class="dataTable"
+            v-if="detailStatu===100"
+            :data="detailTableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+            style="width: 100%"
+          >
+            <el-table-column
+              prop="name"
+              label="姓名"
+              width="180"
+            />
+            <el-table-column
+              prop="organizationName"
+              label="所在大学"
+              width="180"
+              sortable
+            />
+            <el-table-column
+              prop="collegeName"
+              label="所在院系"
+            />
+          </el-table>
+          <el-pagination
+            v-if="detailStatu===100"
+            class="pagination"
+            align="center"
+            :current-page="currentPage"
+            :page-sizes="[1,5,10,20]"
+            :page-size="pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="antiCrawlerTableData.length"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+          />
           <el-button class="next-button" :disabled="debug && detailNextBtn" @click="next">下一步</el-button>
           <el-button class="exc-button" :disabled="detailExcBtn" @click="axiosDetail">执行</el-button>
         </el-card>
@@ -73,10 +107,44 @@
     <el-row v-if="active==5" type="flex" justify="left" class="active">
       <el-col :span="12">
         <el-card class="box-card">
-          <div class="text item">更新反爬虫详情，处理进度<div v-if="imgCrawlerStatu!=0">共有{{ imgCrawlerSize }}条数据</div></div>
-          <el-progress :text-inside="true" :stroke-width="20" :percentage="imgCrawlerStatu" status="success" class="progress" />
-          <el-button class="next-button" :disabled="debug && imgCrawlerNextBtn" @click="next">下一步</el-button>
-          <el-button class="exc-button" :disabled="imgCrawlerExcBtn" @click="axiosImgCrawler">执行</el-button>
+          <div class="text item">更新反爬虫详情，处理进度<div v-if="antiCrawlerStatu!=0">共有{{ antiCrawlerSize }}条数据</div></div>
+          <el-progress :text-inside="true" :stroke-width="20" :percentage="antiCrawlerStatu" status="success" class="progress" />
+          <el-table
+            class="dataTable"
+            v-if="antiCrawlerStatu===100"
+            :data="antiCrawlerTableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+            style="width: 100%"
+          >
+            <el-table-column
+              prop="name"
+              label="姓名"
+              width="180"
+            />
+            <el-table-column
+              prop="organizationName"
+              label="所在大学"
+              width="180"
+              sortable
+            />
+            <el-table-column
+              prop="collegeName"
+              label="所在院系"
+            />
+          </el-table>
+          <el-pagination
+            v-if="antiCrawlerStatu===100"
+            class="pagination"
+            align="center"
+            :current-page="currentPage"
+            :page-sizes="[1,5,10,20]"
+            :page-size="pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="antiCrawlerTableData.length"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+          />
+          <el-button class="next-button" :disabled="debug && antiCrawlerNextBtn" @click="next">下一步</el-button>
+          <el-button class="exc-button" :disabled="antiCrawlerExcBtn" @click="axiosAntiCrawler">执行</el-button>
         </el-card>
       </el-col>
     </el-row>
@@ -85,6 +153,40 @@
         <el-card class="box-card">
           <div class="text item">匹配学者信息，处理进度<div v-if="detailMatchStatu!=0">共有{{ detailMatchSize }}条数据</div></div>
           <el-progress :text-inside="true" :stroke-width="20" :percentage="detailMatchStatu" status="success" class="progress" />
+          <el-table
+            class="dataTable"
+            v-if="detailMatchStatu===100"
+            :data="detailMatchTableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+            style="width: 100%"
+          >
+            <el-table-column
+              prop="name"
+              label="姓名"
+              width="180"
+            />
+            <el-table-column
+              prop="organizationName"
+              label="所在大学"
+              width="180"
+              sortable
+            />
+            <el-table-column
+              prop="collegeName"
+              label="所在院系"
+            />
+          </el-table>
+          <el-pagination
+            v-if="detailMatchStatu===100"
+            class="pagination"
+            align="center"
+            :current-page="currentPage"
+            :page-sizes="[1,5,10,20]"
+            :page-size="pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="antiCrawlerTableData.length"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+          />
           <el-button class="next-button" :disabled="debug && detailMatchNextBtn" @click="next">下一步</el-button>
           <el-button class="exc-button" :disabled="detailMatchExcBtn" @click="axiosDetailMatch">执行</el-button>
         </el-card>
@@ -97,7 +199,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { getToken } from '@/utils/auth'
-import { loadConfig, loadConfigStatus, crawler, crawlerStatus, imgCrawler, imgCrawlerStatus , detail ,detailStatus ,detailMatch ,detailMatchStatus} from '@/api/updateByXpath'
+import { updateStatus, loadConfig, loadConfigStatus, crawler, crawlerStatus, imgCrawler, imgCrawlerStatus, detail, detailStatus, antiCrawler, antiCrawlerStatus, detailMatch, detailMatchStatus } from '@/api/updateByXpath'
 export default {
   name: 'UpdateByXpath',
   computed: {
@@ -126,11 +228,21 @@ export default {
       detailSize: -1,
       detailNextBtn: true,
       detailExcBtn: false,
+      antiCrawlerStatu: 0,
+      antiCrawlerSize: -1,
+      antiCrawlerNextBtn: true,
+      antiCrawlerExcBtn: false,
       detailMatchStatu: 0,
       detailMatchSize: -1,
       detailMatchNextBtn: true,
       detailMatchExcBtn: false,
-      fileList: []
+      fileList: [],
+      detailTableData: [],
+      antiCrawlerTableData: [],
+      detailMatchTableData: [],
+      currentPage: 1, // 当前页码
+      total: 20, // 总条数
+      pageSize: 10 // 每页的数据条数
 
     }
   },
@@ -209,7 +321,43 @@ export default {
     axiosDetail() {
       this.detailExcBtn = true
       detail().then(response => {
+        console.log(response['data'])
+        var str = response['data']
+        var obj = JSON.parse(str)
+        this.total = obj.len
+        for (var key of Object.keys(obj)) {
+          var objElement = obj[key]
+          var splitStr = objElement.split(' ')
+          this.detailTableData.push({ organizationName: splitStr[0], collegeName: splitStr[1], name: splitStr[2] })
+          // console.log(objElement)
+        }
+      }).catch()
+    },
+    refreshAntiCrawlerStatus() {
+      antiCrawlerStatus().then(response => {
+        var str = response['data']
+        var obj = JSON.parse(str)
+        this.antiCrawlerStatu = obj.progress
+        this.antiCrawlerSize = obj.size
         console.log(response)
+        if (obj.progress === 100) {
+          this.antiCrawlerNextBtn = false
+        }
+      }).catch()
+    },
+    axiosAntiCrawler() {
+      this.detailExcBtn = true
+      antiCrawler().then(response => {
+        // console.log(response['data'])
+        var str = response['data']
+        var obj = JSON.parse(str)
+        this.total = obj.len
+        for (var key of Object.keys(obj)) {
+          var objElement = obj[key]
+          var splitStr = objElement.split(' ')
+          this.antiCrawlerTableData.push({ organizationName: splitStr[0], collegeName: splitStr[1], name: splitStr[2] })
+          // console.log(objElement)
+        }
       }).catch()
     },
     refreshDetailMatchStatus() {
@@ -227,7 +375,16 @@ export default {
     axiosDetailMatch() {
       this.detailMatchExcBtn = true
       detailMatch().then(response => {
-        console.log(response)
+        console.log(response['data'])
+        var str = response['data']
+        var obj = JSON.parse(str)
+        this.total = obj.len
+        for (var key of Object.keys(obj)) {
+          var objElement = obj[key]
+          var splitStr = objElement.split(' ')
+          this.detailMatchTableData.push({ organizationName: splitStr[0], collegeName: splitStr[1], name: splitStr[2] })
+          // console.log(objElement)
+        }
       }).catch()
     },
     next() {
@@ -245,11 +402,17 @@ export default {
         this.timer = setInterval(this.refreshDetailStatus, 1000)
       } else if (this.active === 5) {
         clearInterval(this.timer)
-        // this.timer = setInterval(this.refreshCrawlerStatus, 3000)
+        this.timer = setInterval(this.refreshAntiCrawlerStatus, 1000)
       } else if (this.active === 6) {
         clearInterval(this.timer)
         this.timer = setInterval(this.refreshDetailMatchStatus, 1000)
       }
+      updateStatus().then().catch()
+      this.detailTableData = []
+      this.antiCrawlerTableData = []
+      this.detailMatchTableData = []
+      this.pageSize = 10
+      this.currentPage = 1
     },
     // submitUpload() {
     //   this.$refs.upload.submit()
@@ -281,6 +444,17 @@ export default {
       // }
       // return (extension || extension2) && isLt2M
       return extension
+    },
+    // 每页条数改变时触发 选择一页显示多少行
+    handleSizeChange(val) {
+      // console.log(`每页 ${val} 条`)
+      this.currentPage = 1
+      this.pageSize = val
+    },
+    // 当前页改变时触发 跳转其他页
+    handleCurrentChange(val) {
+      // console.log(`当前页: ${val}`)
+      this.currentPage = val
     }
   }
 }
@@ -315,5 +489,11 @@ export default {
 .item {
   padding: 10px 0;
   margin-top: 10px;
+}
+.dataTable{
+  margin-top:10px;
+}
+.pagination{
+  margin-top:10px;
 }
 </style>

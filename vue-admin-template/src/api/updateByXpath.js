@@ -61,3 +61,23 @@ export function detailMatchStatus() {
     method: 'get'
   })
 }
+
+export function antiCrawler() {
+  return request({
+    url: '/anti_crawler/',
+    method: 'get'
+  })
+}
+export function antiCrawlerStatus() {
+  return request({
+    url: '/anti_crawler_status/',
+    method: 'get'
+  })
+}
+
+export function updateStatus() {
+  return request({
+    url: '/update_status/',
+    method: 'get'
+  })
+}
