@@ -45,6 +45,39 @@
         <el-card class="box-card">
           <div class="text item">更新学者路径，处理进度<div v-if="crawlerStatu!=0">共有{{ crawlerSize }}条数据</div></div>
           <el-progress :text-inside="true" :stroke-width="20" :percentage="crawlerStatu" status="success" class="progress" />
+          <el-table
+            class="dataTable"
+            v-if="!debug || crawlerStatu===100"
+            :data="crawlerTableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+            style="width: 100%"
+          >
+            <el-table-column
+              prop="name"
+              label="姓名"
+              width="180"
+            />
+            <el-table-column
+              prop="organizationName"
+              label="所在大学"
+              width="180"
+            />
+            <el-table-column
+              prop="collegeName"
+              label="所在院系"
+            />
+          </el-table>
+          <el-pagination
+            v-if="!debug || crawlerStatu===100"
+            class="pagination"
+            align="center"
+            :current-page="currentPage"
+            :page-sizes="[1,5,10,20]"
+            :page-size="pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="crawlerTableData.length"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+          />
           <el-button class="next-button" :disabled="debug && crawlerNextBtn" @click="next">下一步</el-button>
           <el-button class="exc-button" :disabled="debug && crawlerExcBtn" @click="axiosCrawler">执行</el-button>
         </el-card>
@@ -55,6 +88,39 @@
         <el-card class="box-card">
           <div class="text item">处理特殊数据，处理进度<div v-if="imgCrawlerStatu!=0">共有{{ imgCrawlerSize }}条数据</div></div>
           <el-progress :text-inside="true" :stroke-width="20" :percentage="imgCrawlerStatu" status="success" class="progress" />
+          <el-table
+            class="dataTable"
+            v-if="!debug || imgCrawlerStatu===100"
+            :data="imgCrawlerTableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+            style="width: 100%"
+          >
+            <el-table-column
+              prop="name"
+              label="姓名"
+              width="180"
+            />
+            <el-table-column
+              prop="organizationName"
+              label="所在大学"
+              width="180"
+            />
+            <el-table-column
+              prop="collegeName"
+              label="所在院系"
+            />
+          </el-table>
+          <el-pagination
+            v-if="!debug || imgCrawlerStatu===100"
+            class="pagination"
+            align="center"
+            :current-page="currentPage"
+            :page-sizes="[1,5,10,20]"
+            :page-size="pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="imgCrawlerTableData.length"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+          />
           <el-button class="next-button" :disabled="debug && imgCrawlerNextBtn" @click="next">下一步</el-button>
           <el-button class="exc-button" :disabled="debug && imgCrawlerExcBtn" @click="axiosImgCrawler">执行</el-button>
         </el-card>
@@ -234,6 +300,8 @@ export default {
       detailMatchNextBtn: true,
       detailMatchExcBtn: false,
       fileList: [],
+      crawlerTableData: [],
+      imgCrawlerTableData: [],
       detailTableData: [],
       antiCrawlerTableData: [],
       detailMatchTableData: [],
@@ -282,7 +350,16 @@ export default {
     axiosCrawler() {
       this.crawlerExcBtn = true
       crawler().then(response => {
-        console.log(response)
+        console.log(response['data'])
+        var str = response['data']
+        var obj = JSON.parse(str)
+        this.total = obj.len
+        for (var key of Object.keys(obj)) {
+          var objElement = obj[key]
+          var splitStr = objElement.split(' ')
+          this.crawlerTableData.push({ organizationName: splitStr[0], collegeName: splitStr[1], name: splitStr[2] })
+          // console.log(objElement)
+        }
       }).catch()
     },
     refreshImgCrawlerStatus() {
@@ -300,7 +377,16 @@ export default {
     axiosImgCrawler() {
       this.imgCrawlerExcBtn = true
       imgCrawler().then(response => {
-        console.log(response)
+        console.log(response['data'])
+        var str = response['data']
+        var obj = JSON.parse(str)
+        this.total = obj.len
+        for (var key of Object.keys(obj)) {
+          var objElement = obj[key]
+          var splitStr = objElement.split(' ')
+          this.imgCrawlerTableData.push({ organizationName: splitStr[0], collegeName: splitStr[1], name: splitStr[2] })
+          // console.log(objElement)
+        }
       }).catch()
     },
     refreshDetailStatus() {
@@ -318,7 +404,7 @@ export default {
     axiosDetail() {
       this.detailExcBtn = true
       detail().then(response => {
-        console.log(response['data'])
+        // console.log(response['data'])
         var str = response['data']
         var obj = JSON.parse(str)
         this.total = obj.len
@@ -405,6 +491,8 @@ export default {
         this.timer = setInterval(this.refreshDetailMatchStatus, 1000)
       }
       updateStatus().then().catch()
+      this.crawlerTableData = []
+      this.imgCrawlerTableData = []
       this.detailTableData = []
       this.antiCrawlerTableData = []
       this.detailMatchTableData = []
