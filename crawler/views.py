@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.parsers import JSONParser
 from rest_framework_jwt.serializers import jwt_payload_handler, jwt_encode_handler
 from rest_framework import permissions
-from mongo.utils import getAll, getByName, getOrganizationName
+from mongo.utils import getAll, getByOrganizationName, getOrganizationNameList
 
 from buaaac import settings
 from django.views.decorators.csrf import csrf_exempt
