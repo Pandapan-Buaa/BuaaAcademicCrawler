@@ -3,3 +3,4 @@
 /vue-element-admin/node_moudles/*
 *.pyc
 __pycache__
+/*/__pycache__/*
