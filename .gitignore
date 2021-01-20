@@ -2,5 +2,4 @@
 /vue-admin-template/node_moudles/*
 /vue-element-admin/node_moudles/*
 *.pyc
-__pycache__
-/*/__pycache__/*
+*/__pycache__
