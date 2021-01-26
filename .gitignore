@@ -1,5 +1,6 @@
-/__pycache__/*
 /vue-admin-template/node_moudles/*
 /vue-element-admin/node_moudles/*
 *.pyc
-*/__pycache__
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
