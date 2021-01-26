@@ -213,8 +213,8 @@ export default {
   },
   mounted() {
     getOrganazationName(this.token).then(response => {
-      // console.log(response)
-      // console.log(response['data'])
+      console.log(response)
+      console.log(response['data'])
       this.organizations = response['data']
       // console.log(this.states)
       // console.log(this.value.length)

@@ -1,4 +1,4 @@
-import request from '@/utils/test'
+import request from '@/utils/request'
 
 export function getOrganazationName(token) {
   return request({
