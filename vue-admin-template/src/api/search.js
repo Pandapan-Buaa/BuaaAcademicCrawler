@@ -4,8 +4,10 @@ export function getOrganazationName(token) {
   return request({
     // url: '/vue-admin-template/user/info',
     url: '/mongo/getOrganization/',
-    method: 'get'
-    // params: { token }
+    method: 'get',
+    params: {
+      database: 'scholar_temp'
+    }
   })
 }
 
@@ -15,6 +17,7 @@ export function getCollegeName(token, organizationName) {
     url: '/mongo/getCollege/',
     method: 'get',
     params: {
+      database: 'scholar_temp',
       organizationName: organizationName
     }
   })
@@ -38,13 +41,3 @@ export function getAllData(token) {
   })
 }
 
-export function getUrl(token, organizationName, collegeName) {
-  return request({
-    url: '/mongo/getUrl/',
-    method: 'get',
-    params: {
-      organizationName: organizationName,
-      collegeName: collegeName
-    }
-  })
-}

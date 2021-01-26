@@ -1,5 +1,7 @@
 <template>
   <el-main>
+    <h4>总爬取高校数:{{ organizationList.length }}</h4>
+    <h4>总爬取学者数:{{ total }}</h4>
     <el-card class="card1">
       <h2>详细爬取数量查询</h2>
       <div style="margin-bottom: 20px">
@@ -34,7 +36,6 @@
           </el-col>
         </el-row>
       </div>
-      <h4>总爬取学者数:{{ total }}</h4>
       <el-table
         :data="tableData"
         stripe
@@ -103,65 +104,11 @@
         />
       </el-table>
     </el-card>
-    <el-card class="card3">
-      <h2>高校学院url查询</h2>
-      <div style="margin-bottom: 20px">
-        <el-row class="search">
-          <el-col :span="4">
-            <el-select
-              v-model="organizationValue3"
-              filterable
-              reserve-keyword
-              placeholder="请输入待查询高校名称"
-            >
-              <el-option
-                v-for="item in organizationList"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </el-select>
-          </el-col>
-          <el-col :span="4">
-            <el-select v-model="collegeValue3" filterable placeholder="请选择待查询院系名称">
-              <el-option
-                v-for="item in collegeList3"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </el-select>
-          </el-col>
-          <el-col :span="4">
-            <el-button type="primary" icon="el-icon-search" @click="searchUrl">搜索</el-button>
-          </el-col>
-        </el-row>
-      </div>
-      <el-table
-        :data="tableData3"
-        stripe
-        style="width: 100%"
-      >
-        <el-table-column
-          prop="organizationName"
-          label="高校名称"
-          width="180"
-        />
-        <el-table-column
-          prop="collegeName"
-          label="学院名称"
-        />
-        <el-table-column
-          prop="url"
-          label="学院url"
-        />
-      </el-table>
-    </el-card>
   </el-main>
 </template>
 
 <script>
-import { getOrganazationName, searchOrganizationData, getAllData, getCollegeName, getUrl } from '@/api/search'
+import { getOrganazationName, searchOrganizationData, getAllData, getCollegeName } from '@/api/search'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -174,15 +121,11 @@ export default {
     return {
       tableData: [],
       tableData2: [],
-      tableData3: [],
       organizationValue: '', // 选中
       organizationValue2: '',
-      organizationValue3: '',
       organizationList: [], // select框数据
       collegeValue: '', // 选中
-      collegeValue3: '',
       collegeList: [],
-      collegeList3: [], // select框数据
       organizations: [],
       colleges: [],
       total: 0
@@ -194,15 +137,6 @@ export default {
         this.colleges = response['data']
         // console.log(response)
         this.collegeList = this.colleges.map(item => {
-          return { value: `${item}`, label: `${item}` }
-        })
-      }).catch()
-    },
-    organizationValue3(newValue, oldValue) {
-      getCollegeName(this.token, newValue).then(response => {
-        this.colleges = response['data']
-        // console.log(response)
-        this.collegeList3 = this.colleges.map(item => {
           return { value: `${item}`, label: `${item}` }
         })
       }).catch()
@@ -274,17 +208,6 @@ export default {
           }
         }
       }
-    },
-    searchUrl() {
-      getUrl(this.token, this.organizationValue3, this.collegeValue3).then(response => {
-        // console.log(response)
-        this.tableData3.push({
-          organizationName: this.organizationValue3,
-          collegeName: this.collegeValue3,
-          url: response['url']
-        })
-        this.uniqueForCard1(this.tableData3)
-      }).catch()
     }
   }
 }

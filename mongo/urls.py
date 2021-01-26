@@ -8,4 +8,5 @@ urlpatterns = [
     url(r'^getOrganization/$', views.getOrganizationName.as_view()),
     url(r'^getCollege/$', views.getCollegeName.as_view()),
     url(r'^getUrl/$', views.getUrlByName.as_view()),
+    url(r'^exportCsv/$', views.exportAsCSV.as_view()),
 ]

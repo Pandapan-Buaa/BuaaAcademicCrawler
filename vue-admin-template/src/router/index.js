@@ -57,6 +57,17 @@ export const constantRoutes = [
   {
     path: '/',
     component: Layout,
+    redirect: '/urlCRU',
+    children: [{
+      path: 'urlCRU',
+      name: 'urlCRU',
+      component: () => import('@/views/main/urlCRU'),
+      meta: { title: '高校url标准库', icon: 'el-icon-folder-checked' }
+    }]
+  },
+  {
+    path: '/',
+    component: Layout,
     redirect: '/updateAll',
     children: [{
       path: 'updateAll',

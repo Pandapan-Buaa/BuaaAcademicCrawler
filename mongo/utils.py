@@ -1,5 +1,7 @@
 import pymongo
-
+import time
+import csv
+from buaaac import settings
 
 def getAll():
     myclient = pymongo.MongoClient("mongodb://localhost:27017")
@@ -20,6 +22,7 @@ def getAll():
     myclient.close()
     return count
 
+
 def getByOrganizationName(organizationName):
     myclient = pymongo.MongoClient("mongodb://localhost:27017")
     dblist = myclient.list_database_names()
@@ -38,6 +41,7 @@ def getByOrganizationName(organizationName):
         count += x.count()
     myclient.close()
     return count
+
 
 def getByOrganizationNameAndCollegeName(organizationName, collegeName):
     myclient = pymongo.MongoClient("mongodb://localhost:27017")
@@ -58,7 +62,8 @@ def getByOrganizationNameAndCollegeName(organizationName, collegeName):
     myclient.close()
     return count
 
-def getOrganizationNameList():
+
+def getOrganizationNameList(database):
     myclient = pymongo.MongoClient("mongodb://localhost:27017")
     dblist = myclient.list_database_names()
     if "cloud_academic" not in dblist:
@@ -68,7 +73,7 @@ def getOrganizationNameList():
     collist = mydb.list_collection_names()
     res = []
     for str in collist:
-        if (str == 'scholar_temp'):
+        if (str == database):
             mycol = mydb[str]
         else:
             continue
@@ -84,7 +89,8 @@ def getOrganizationNameList():
         #         z.append(college)
         #     dict[organization] = z
 
-def getCollegeNameList(organizationName):
+
+def getCollegeNameList(database,organizationName):
     myclient = pymongo.MongoClient("mongodb://localhost:27017")
     dblist = myclient.list_database_names()
     if "cloud_academic" not in dblist:
@@ -94,7 +100,7 @@ def getCollegeNameList(organizationName):
     collist = mydb.list_collection_names()
     res = []
     for str in collist:
-        if (str == 'scholar_temp'):
+        if (str == database):
             mycol = mydb[str]
         else:
             continue
@@ -102,6 +108,7 @@ def getCollegeNameList(organizationName):
         # print(res)
         myclient.close()
         return res
+
 
 def getUrlByOrganizationNameAndCollegeName(organizationName, collegeName):
     myclient = pymongo.MongoClient("mongodb://localhost:27017")
@@ -122,5 +129,39 @@ def getUrlByOrganizationNameAndCollegeName(organizationName, collegeName):
     for i in x:
         res.append(i['url'])
     return ','.join(i for i in res)
+
+
 # getCollegeNameList("江南大学")
 # print(getUrlByOrganizationNameAndCollegeName("成都文理学院","文法学院"))
+
+def addUrl(organizationName, collegeName, url):
+    myclient = pymongo.MongoClient("mongodb://localhost:27017")
+    dblist = myclient.list_database_names()
+    data = {"organizationName": organizationName, "collegeName": collegeName, "url": url, "是否采集学院": "false"}
+    if "cloud_academic" not in dblist:
+        print("数据库不存在！")
+        return 0
+    mydb = myclient["cloud_academic"]
+    collist = mydb.list_collection_names()
+    for str in collist:
+        if (str == 'organization'):
+            mycol = mydb[str]
+            mycol.insert_one(data)
+        else:
+            continue
+
+def updateUrl(organizationName, collegeName, url):
+    myclient = pymongo.MongoClient("mongodb://localhost:27017")
+    dblist = myclient.list_database_names()
+    if "cloud_academic" not in dblist:
+        print("数据库不存在！")
+        return 0
+    mydb = myclient["cloud_academic"]
+    collist = mydb.list_collection_names()
+    for str in collist:
+        if (str == 'organization'):
+            mycol = mydb[str]
+            mycol.update_one({"organizationName": organizationName,"collegeName": collegeName},{"$set":{"url":url}})
+        else:
+            continue
+
