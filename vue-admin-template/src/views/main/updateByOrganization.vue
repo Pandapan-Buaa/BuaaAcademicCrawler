@@ -135,7 +135,7 @@
             @current-change="handleCurrentChange"
           />
           <el-button class="next-button" :disabled="debug && antiCrawlerNextBtn" type="primary" @click="next">下一步</el-button>
-          <el-button class="exc-button" :disabled="debug && antiCrawlerNextBtn" type="success" @click="axiosDetail">执行</el-button>
+          <el-button class="exc-button" :disabled="debug && antiCrawlerNextBtn" type="success" @click="axiosAntiCrawler">执行</el-button>
         </el-card>
     </el-row>
     <el-row v-if="active===3" type="flex" justify="left" class="active">
