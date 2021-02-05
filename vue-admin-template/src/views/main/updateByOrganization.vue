@@ -2,7 +2,7 @@
   <el-main>
     <el-row>
       <el-col :span="24">
-        <el-steps :space="2000" :active="active" finish-status="success">
+        <el-steps :active="active" finish-status="success" simple style="margin-top: 10px">
           <el-step title="步骤1" />
           <el-step title="步骤2" />
           <el-step title="步骤3" />
@@ -16,6 +16,7 @@
           filterable
           reserve-keyword
           placeholder="请输入待查询高校名称"
+          style="border-radius: 25%; margin:auto"
         >
           <el-option
             v-for="item in organizationList"
@@ -32,7 +33,11 @@
             :value="item.value"
           />
         </el-select>
-        <div class="text item">更新详情，处理进度
+        <div slot="header" class="clearfix">
+          <h2 style="font-weight: 300; text-align: center">更新详情</h2>
+        </div>
+        <div class="text item">
+          <h3 style="font-weight: 300; text-align: center">处  理  进  度</h3>
           <div v-if="detailStatu!=0">共有{{ detailSize }}条数据</div>
         </div>
         <el-progress
@@ -51,16 +56,20 @@
           <el-table-column
             prop="name"
             label="姓名"
-            width="180"
+            width="200"
+            align="center"
           />
           <el-table-column
             prop="organizationName"
             label="所在大学"
-            width="180"
+            width="500"
+            align="center"
           />
           <el-table-column
             prop="collegeName"
             label="所在院系"
+            width="300"
+            align="center"
           />
         </el-table>
         <el-pagination
@@ -75,14 +84,18 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
         />
-        <el-button class="next-button" :disabled="debug && detailNextBtn" @click="next">下一步</el-button>
-        <el-button class="exc-button" :disabled="debug && detailExcBtn" @click="axiosDetail">执行</el-button>
+        <el-button class="next-button" :disabled="debug && detailNextBtn" type="primary" @click="next">下一步</el-button>
+        <el-button class="exc-button" :disabled="debug && detailExcBtn" type="success" @click="axiosDetail">执行</el-button>
       </el-card>
     </el-row>
     <el-row v-if="active===2" type="flex" justify="left" class="active">
-      <el-col :span="12">
         <el-card class="box-card">
-          <div class="text item">更新反爬虫详情，处理进度<div v-if="antiCrawlerStatu!=0">共有{{ antiCrawlerSize }}条数据</div></div>
+          <div slot="header" class="clearfix">
+            <h2 style="font-weight: 300; text-align: center">更新反爬虫详情</h2>
+          </div>
+          <div class="text item">
+            <h3 style="font-weight: 300; text-align: center">处  理  进  度</h3>
+            <div v-if="antiCrawlerStatu!=0">共有{{ antiCrawlerSize }}条数据</div></div>
           <el-progress :text-inside="true" :stroke-width="20" :percentage="antiCrawlerStatu" status="success" class="progress" />
           <el-table
             class="dataTable"
@@ -93,16 +106,20 @@
             <el-table-column
               prop="name"
               label="姓名"
-              width="180"
+              width="200"
+              align="center"
             />
             <el-table-column
               prop="organizationName"
               label="所在大学"
-              width="180"
+              width="500"
+              align="center"
             />
             <el-table-column
               prop="collegeName"
               label="所在院系"
+              width="300"
+              align="center"
             />
           </el-table>
           <el-pagination
@@ -117,15 +134,18 @@
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
           />
-          <el-button class="next-button" :disabled="debug && antiCrawlerNextBtn" @click="next">下一步</el-button>
-          <el-button class="exc-button" :disabled="debug && antiCrawlerExcBtn" @click="axiosAntiCrawler">执行</el-button>
+          <el-button class="next-button" :disabled="debug && antiCrawlerNextBtn" type="primary" @click="next">下一步</el-button>
+          <el-button class="exc-button" :disabled="debug && antiCrawlerNextBtn" type="success" @click="axiosDetail">执行</el-button>
         </el-card>
-      </el-col>
     </el-row>
     <el-row v-if="active===3" type="flex" justify="left" class="active">
-      <el-col :span="12">
         <el-card class="box-card">
-          <div class="text item">匹配学者信息，处理进度<div v-if="detailMatchStatu!=0">共有{{ detailMatchSize }}条数据</div></div>
+          <div slot="header" class="clearfix">
+            <h2 style="font-weight: 300; text-align: center">匹配学者信息</h2>
+          </div>
+          <div class="text item">
+            <h3 style="font-weight: 300; text-align: center">处  理  进  度</h3>
+            <div v-if="detailMatchStatu!=0">共有{{ detailMatchSize }}条数据</div></div>
           <el-progress :text-inside="true" :stroke-width="20" :percentage="detailMatchStatu" status="success" class="progress" />
           <el-table
             class="dataTable"
@@ -136,16 +156,20 @@
             <el-table-column
               prop="name"
               label="姓名"
-              width="180"
+              width="200"
+              align="center"
             />
             <el-table-column
               prop="organizationName"
               label="所在大学"
-              width="180"
+              width="500"
+              align="center"
             />
             <el-table-column
               prop="collegeName"
               label="所在院系"
+              width="300"
+              align="center"
             />
           </el-table>
           <el-pagination
@@ -160,10 +184,9 @@
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
           />
-          <el-button class="next-button" :disabled="debug && detailMatchNextBtn" @click="next">下一步</el-button>
-          <el-button class="exc-button" :disabled="debug && detailMatchExcBtn" @click="axiosDetailMatch">执行</el-button>
+          <el-button class="next-button" :disabled="debug && detailMatchNextBtn" type="primary" @click="next">下一步</el-button>
+          <el-button class="exc-button" :disabled="debug && detailMatchExcBtn" type="success" @click="axiosDetailMatch">执行</el-button>
         </el-card>
-      </el-col>
     </el-row>
   </el-main>
 
@@ -386,5 +409,22 @@ export default {
 
 .pagination {
   margin-top: 10px;
+}
+
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+}
+
+.clearfix:after {
+  clear: both
+}
+
+.box-card {
+  width: 1450px;
+  margin-left: auto;
+  margin-right: auto;
+  margin: auto;
 }
 </style>
