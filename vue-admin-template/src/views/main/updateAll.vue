@@ -15,7 +15,7 @@
           <h2 style="font-weight: 300; text-align: center">更新详情</h2>
         </div>
         <div class="text item">
-          <h3 style="font-weight: 300; text-align: center">处  理  进  度</h3>
+          <h3 style="font-weight: 300; text-align: center">处理进度</h3>
           <div v-if="detailStatu!=0">共有{{ detailSize }}条数据</div>
         </div>
         <el-progress
@@ -41,13 +41,13 @@
           <el-table-column
             prop="organizationName"
             label="所在大学"
-            width="500"
+            width="400"
             align="center"
           />
           <el-table-column
             prop="collegeName"
             label="所在院系"
-            width="300"
+            width="200"
             align="center"
           />
         </el-table>
@@ -63,111 +63,111 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
         />
-        <el-button class="next-button" :disabled="debug && detailNextBtn" type="primary" @click="next">下一步</el-button>
-        <el-button class="exc-button" :disabled="debug && detailExcBtn" type="success" @click="axiosDetail">执行</el-button>
+        <el-button class="next-button" :disabled="debug && detailNextBtn" type="success"plain @click="next">下一步</el-button>
+        <el-button class="exc-button" :disabled="debug && detailExcBtn" type="success"plain @click="axiosDetail">执行</el-button>
       </el-card>
     </el-row>
     <el-row v-if="active===2" type="flex" justify="left" class="active">
-        <el-card class="box-card">
-          <div slot="header" class="clearfix">
-            <h2 style="font-weight: 300; text-align: center">更新反爬虫详情</h2>
-          </div>
-          <div class="text item">
-            <h3 style="font-weight: 300; text-align: center">处  理  进  度</h3>
-            <div v-if="antiCrawlerStatu!=0">共有{{ antiCrawlerSize }}条数据</div></div>
-          <el-progress :text-inside="true" :stroke-width="20" :percentage="antiCrawlerStatu" status="success" class="progress" />
-          <el-table
-            class="dataTable"
-            v-if="!debug || antiCrawlerStatu===100"
-            :data="antiCrawlerTableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
-            style="width: 100%"
+      <el-card class="box-card">
+        <div slot="header" class="clearfix">
+          <h2 style="font-weight: 300; text-align: center">更新反爬虫详情</h2>
+        </div>
+        <div class="text item">
+          <h3 style="font-weight: 300; text-align: center">处理进度</h3>
+          <div v-if="antiCrawlerStatu!=0">共有{{ antiCrawlerSize }}条数据</div></div>
+        <el-progress :text-inside="true" :stroke-width="20" :percentage="antiCrawlerStatu" status="success" class="progress" />
+        <el-table
+          class="dataTable"
+          v-if="!debug || antiCrawlerStatu===100"
+          :data="antiCrawlerTableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+          style="width: 100%"
+          align="center"
+        >
+          <el-table-column
+            prop="name"
+            label="姓名"
+            width="200"
             align="center"
-          >
-            <el-table-column
-              prop="name"
-              label="姓名"
-              width="200"
-              align="center"
-            />
-            <el-table-column
-              prop="organizationName"
-              label="所在大学"
-              width="500"
-              align="center"
-            />
-            <el-table-column
-              prop="collegeName"
-              label="所在院系"
-              width="300"
-              align="center"
-            />
-          </el-table>
-          <el-pagination
-            v-if="!debug || antiCrawlerStatu===100"
-            class="pagination"
-            align="center"
-            :current-page="currentPage"
-            :page-sizes="[1,5,10,20]"
-            :page-size="pageSize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="antiCrawlerTableData.length"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
           />
-          <el-button class="next-button" :disabled="debug && antiCrawlerExcBtn" type="primary" @click="next">下一步</el-button>
-          <el-button class="exc-button" :disabled="debug && antiCrawlerExcBtn" type="success" @click="axiosDetail">执行</el-button>
-        </el-card>
+          <el-table-column
+            prop="organizationName"
+            label="所在大学"
+            width="400"
+            align="center"
+          />
+          <el-table-column
+            prop="collegeName"
+            label="所在院系"
+            width="200"
+            align="center"
+          />
+        </el-table>
+        <el-pagination
+          v-if="!debug || antiCrawlerStatu===100"
+          class="pagination"
+          align="center"
+          :current-page="currentPage"
+          :page-sizes="[1,5,10,20]"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="antiCrawlerTableData.length"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+        />
+        <el-button class="next-button" :disabled="debug && antiCrawlerExcBtn" type="success"plain @click="next">下一步</el-button>
+        <el-button class="exc-button" :disabled="debug && antiCrawlerExcBtn" type="success"plain @click="axiosDetail">执行</el-button>
+      </el-card>
     </el-row>
     <el-row v-if="active===3" type="flex" justify="left" class="active">
-        <el-card class="box-card">
-          <div slot="header" class="clearfix">
-            <h2 style="font-weight: 300; text-align: center">匹配学者信息</h2>
-          </div>
-          <div class="text item">
-            <h3 style="font-weight: 300; text-align: center">处  理  进  度</h3>
-            <div v-if="detailMatchStatu!=0">共有{{ detailMatchSize }}条数据</div></div>
-          <el-progress :text-inside="true" :stroke-width="20" :percentage="detailMatchStatu" status="success" class="progress" />
-          <el-table
-            class="dataTable"
-            v-if=" !debug || detailMatchStatu===100"
-            :data="detailMatchTableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
-            style="width: 100%"
+      <el-card class="box-card">
+        <div slot="header" class="clearfix">
+          <h2 style="font-weight: 300; text-align: center">匹配学者信息</h2>
+        </div>
+        <div class="text item">
+          <h3 style="font-weight: 300; text-align: center">处理进度</h3>
+          <div v-if="detailMatchStatu!=0">共有{{ detailMatchSize }}条数据</div></div>
+        <el-progress :text-inside="true" :stroke-width="20" :percentage="detailMatchStatu" status="success" class="progress" />
+        <el-table
+          class="dataTable"
+          v-if=" !debug || detailMatchStatu===100"
+          :data="detailMatchTableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+          style="width: 100%"
+          align="center"
+        >
+          <el-table-column
+            prop="name"
+            label="姓名"
+            width="200"
             align="center"
-          >
-            <el-table-column
-              prop="name"
-              label="姓名"
-              width="200"
-              align="center"
-            />
-            <el-table-column
-              prop="organizationName"
-              label="所在大学"
-              width="500"
-              align="center"
-            />
-            <el-table-column
-              prop="collegeName"
-              label="所在院系"
-              width="300"
-              align="center"
-            />
-          </el-table>
-          <el-pagination
-            v-if="!debug || detailMatchStatu===100"
-            class="pagination"
-            align="center"
-            :current-page="currentPage"
-            :page-sizes="[1,5,10,20]"
-            :page-size="pageSize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="detailMatchTableData.length"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
           />
-          <el-button class="next-button" :disabled="debug && detailMatchExcBtn" type="primary" @click="next">下一步</el-button>
-          <el-button class="exc-button" :disabled="debug && detailMatchExcBtn" type="success" @click="axiosDetail">执行</el-button>
-        </el-card>
+          <el-table-column
+            prop="organizationName"
+            label="所在大学"
+            width="400"
+            align="center"
+          />
+          <el-table-column
+            prop="collegeName"
+            label="所在院系"
+            width="200"
+            align="center"
+          />
+        </el-table>
+        <el-pagination
+          v-if="!debug || detailMatchStatu===100"
+          class="pagination"
+          align="center"
+          :current-page="currentPage"
+          :page-sizes="[1,5,10,20]"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="detailMatchTableData.length"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+        />
+        <el-button class="next-button" :disabled="debug && detailMatchExcBtn" type="success"plain @click="next">下一步</el-button>
+        <el-button class="exc-button" :disabled="debug && detailMatchExcBtn" type="success"plain @click="axiosDetail">执行</el-button>
+      </el-card>
     </el-row>
   </el-main>
 
