@@ -29,7 +29,7 @@
           <el-select
             v-model="collegeValue"
             filterable
-            placeholder="请选择待查询院系名称"
+            placeholder="请选择待查询院系名称" 
             style="order-radius: 25%; margin:5px"
           >
             <el-option
