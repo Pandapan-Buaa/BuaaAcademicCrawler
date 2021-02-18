@@ -29,7 +29,7 @@
           <el-select
             v-model="collegeValue"
             filterable
-            placeholder="请选择待查询院系名称" 
+            placeholder="请选择待查询院系名称"
             style="order-radius: 25%; margin:5px"
           >
             <el-option
@@ -144,7 +144,7 @@
           @current-change="handleCurrentChange"
         />
         <el-button class="next-button" :disabled="debug && antiCrawlerNextBtn" type="success"plain @click="next">下一步</el-button>
-        <el-button class="exc-button" :disabled="debug && antiCrawlerNextBtn" type="success"plain @click="axiosDetail">执行</el-button>
+        <el-button class="exc-button" :disabled="debug && antiCrawlerNextBtn" type="success"plain @click="axiosAntiCrawler">执行</el-button>
       </el-card>
     </el-row>
     <el-row v-if="active===3" type="flex" justify="left" class="active">
