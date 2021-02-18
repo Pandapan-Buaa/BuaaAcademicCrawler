@@ -2,23 +2,24 @@
   <el-main>
 
     <el-card class="card1">
-      <h2>新增url</h2>
+      <div class="text" style="text-align: center">新增url</div>
+      <el-divider></el-divider>
       <div style="margin-bottom: 20px">
         <el-row class="search">
           <el-form ref="Form1" :model="ruleForm1" :rules="rules1" label-width="100px" class="demo-ruleForm">
             <el-form-item label="高校名称" prop="organizationName">
-              <el-input v-model="ruleForm1.organizationName" />
+              <el-input  class="input-form" placeholder="请输入高校名称" v-model="ruleForm1.organizationName" />
             </el-form-item>
             <el-form-item label="学院名称" prop="collegeName">
-              <el-input v-model="ruleForm1.collegeName" />
+              <el-input class="input-form" placeholder="请输入学院名称" v-model="ruleForm1.collegeName" />
             </el-form-item>
             <el-form-item label="URL" prop="url">
-              <el-input v-model="ruleForm1.url" />
+              <el-input class="input-form" placeholder="请输入URL" v-model="ruleForm1.url" />
             </el-form-item>
             <el-form-item>
               <el-col :span="8" :offset="20">
-                <el-button type="primary" icon="el-icon-plus" @click="addUrl">添加</el-button>
-                <el-button @click="resetForm('Form1')">重置</el-button>
+                <el-button type="primary" icon="el-icon-plus" @click="addUrl" class="btn">添加</el-button>
+                <el-button @click="resetForm('Form1')" class="btn">重置</el-button>
               </el-col>
             </el-form-item>
           </el-form>
@@ -27,11 +28,12 @@
       </div>
     </el-card>
     <el-card class="card2">
-      <h2>更新url</h2>
+      <div class="text" style="text-align: center">更新url</div>
+      <el-divider></el-divider>
       <div style="margin-bottom: 20px">
         <el-row class="search">
           <el-form ref="Form2" :model="ruleForm2" :rules="rules2" label-width="100px" class="demo-ruleForm">
-            <el-form-item label="高校名称" prop="organizationName">
+            <el-form-item class="input-form-short" label="高校名称" prop="organizationName">
               <el-select
                 v-model="ruleForm2.organizationName"
                 filterable
@@ -47,7 +49,7 @@
               </el-select>
             </el-form-item>
             <el-form-item label="学院名称" prop="collegeName">
-              <el-select v-model="ruleForm2.collegeName" filterable placeholder="请选择待更新院系名称">
+              <el-select class="input-form-short" v-model="ruleForm2.collegeName" filterable placeholder="请选择待更新院系名称">
                 <el-option
                   v-for="item in collegeList2"
                   :key="item.value"
@@ -57,12 +59,12 @@
               </el-select>
             </el-form-item>
             <el-form-item label="URL" prop="url">
-              <el-input v-model="ruleForm2.url" />
+              <el-input class="input-form" placeholder="请输入URL" v-model="ruleForm2.url" />
             </el-form-item>
             <el-form-item>
               <el-col :span="8" :offset="20">
-                <el-button type="primary" icon="el-icon-plus" @click="putUrl">更新</el-button>
-                <el-button @click="resetForm('Form2')">重置</el-button>
+                <el-button type="primary" icon="el-icon-plus" @click="putUrl" class="btn">更新</el-button>
+                <el-button @click="resetForm('Form2')" class="btn">重置</el-button>
               </el-col>
             </el-form-item>
           </el-form>
@@ -71,7 +73,8 @@
       </div>
     </el-card>
     <el-card class="card3">
-      <h2>高校学院url查询</h2>
+      <div class="text" style="text-align: center">高校学院url查询</div>
+      <el-divider></el-divider>
       <div style="margin-bottom: 20px">
         <el-row class="search">
           <el-col :span="4">
@@ -100,7 +103,7 @@
             </el-select>
           </el-col>
           <el-col :span="4">
-            <el-button type="primary" icon="el-icon-search" @click="searchUrl">搜索</el-button>
+            <el-button type="primary" icon="el-icon-search" @click="searchUrl" class="btn">搜索</el-button>
           </el-col>
         </el-row>
       </div>
@@ -125,9 +128,10 @@
       </el-table>
     </el-card>
     <el-card class="card4">
-      <h2>导出未采集部分</h2>
+      <div class="text" style="text-align: center">导出未采集部分</div>
+      <el-divider></el-divider>
       <div style="margin-bottom: 20px">
-        <el-button type="primary" icon="el-icon-download" @click="download">下载csv</el-button>
+        <el-button type="primary" icon="el-icon-download" @click="download" class="btn">下载csv</el-button>
       </div>
     </el-card>
   </el-main>
@@ -343,5 +347,65 @@ export default {
 }
 .card3{
   margin-bottom: 30px;
+}
+.login-form {
+  border-radius: 15px;
+}
+.input-form-short {
+  margin-top: -10px;
+  padding: 10px;
+  /* placeholder变更为大写字体 */
+  text-transform: uppercase;
+  /* 边框效果 */
+  border: 0;
+  outline: none;
+  /*border-bottom: 1px solid #fbc2eb;*/
+}
+.input-form {
+  width: 90%;
+  margin-top: -10px;
+  padding: 10px;
+  /* placeholder变更为大写字体 */
+  text-transform: uppercase;
+  /* 边框效果 */
+  border: 0;
+  outline: none;
+  /*border-bottom: 1px solid #fbc2eb;*/
+}
+.input-form::placeholder{
+  font-weight: bold;
+  color: #acb7c9;
+}
+.input-form:focus {
+  /* 当输入框获取焦点时的效果 */
+  animation: bBottom 2s infinite ;
+}
+.text {
+  /* 标题Login的样式 */
+  font-size: 30px;
+  font-weight: 300;
+  text-align: center;
+  line-height: 80px;
+  margin-top: 0px;
+  margin-bottom: -15px;
+}
+.btn {
+  /*height: 40px;*/
+  /*line-height: 40px;*/
+  /* 字体 */
+  color: #fff;
+  font-weight: bold;
+  letter-spacing: 5px;
+  text-align: center;
+  /* 鼠标样式 */
+  cursor: pointer;
+  /* 边框、背景 */
+  border-radius: 10px;
+  border: none;
+  background: #38b580;
+  background-size: 100%;
+}
+.btn:hover {
+  animation: btnAnimate 1s infinite;
 }
 </style>
