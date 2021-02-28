@@ -109,6 +109,42 @@ export const constantRoutes = [
       meta: { title: '数据统计', icon: 'el-icon-s-data' }
     }]
   },
+  {
+    path: '/',
+    component: Layout,
+    redirect: '/charts',
+    name: 'Charts',
+    meta: {
+      title: '学者数据分析',
+      icon: 'el-icon-s-custom'
+    },
+    children: [
+      {
+        path: 'charts',
+        component: () => import('@/views/main/charts/charts'),
+        name: 'Charts',
+        meta: { title: '学者数据查询', noCache: true, icon: 'el-icon-menu' }
+      },
+      {
+        path: 'keyboard',
+        component: () => import('@/views/main/charts/keyboard'),
+        name: 'KeyboardChart',
+        meta: { title: 'Keyboard Chart', noCache: true }
+      },
+      {
+        path: 'line',
+        component: () => import('@/views/main/charts/line'),
+        name: 'LineChart',
+        meta: { title: 'Line Chart', noCache: true }
+      },
+      {
+        path: 'mix-chart',
+        component: () => import('@/views/main/charts/mix-chart'),
+        name: 'MixChart',
+        meta: { title: 'Mix Chart', noCache: true }
+      }
+    ]
+  },
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]
