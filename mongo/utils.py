@@ -2,7 +2,7 @@ import pymongo
 import time
 import csv
 from buaaac import settings
-
+from mongo import hanlp_process
 def getAll():
     myclient = pymongo.MongoClient("mongodb://localhost:27017")
     dblist = myclient.list_database_names()
@@ -106,6 +106,62 @@ def getCollegeNameList(database,organizationName):
             continue
         res = mycol.find({"organizationName": organizationName}).distinct('collegeName')
         # print(res)
+        myclient.close()
+        return res
+
+
+def getPersonNameList(database,organizationName,collegeName):
+    myclient = pymongo.MongoClient("mongodb://localhost:27017")
+    dblist = myclient.list_database_names()
+    if "cloud_academic" not in dblist:
+        print("数据库不存在！")
+        return 0
+    mydb = myclient["cloud_academic"]
+    collist = mydb.list_collection_names()
+    res = []
+    for str in collist:
+        if (str == database):
+            mycol = mydb[str]
+        else:
+            continue
+        res = mycol.find({"organizationName": organizationName, "collegeName": collegeName}).distinct('name')
+        myclient.close()
+        return res
+
+
+def getPersonInfoByName(database,organizationName,collegeName,personName):
+    myclient = pymongo.MongoClient("mongodb://localhost:27017")
+    dblist = myclient.list_database_names()
+    if "cloud_academic" not in dblist:
+        print("数据库不存在！")
+        return 0
+    mydb = myclient["cloud_academic"]
+    collist = mydb.list_collection_names()
+    res = {}
+    for str in collist:
+        if (str == database):
+            mycol = mydb[str]
+        else:
+            continue
+        content = mycol.find({"organizationName": organizationName, "collegeName": collegeName, \
+            "name": personName}).distinct('content')
+        specContent = hanlp_process.getContent(content[0])
+        res['content'] = content
+        res['specContent'] = specContent
+        res['departmentName'] = mycol.find({"organizationName": organizationName, "collegeName": collegeName, \
+            "name": personName}).distinct('departmentName')
+        res['mainPage'] = mycol.find({"organizationName": organizationName, "collegeName": collegeName, \
+            "name": personName}).distinct('mainPage')
+        res['match'] = mycol.find({"organizationName": organizationName, "collegeName": collegeName, \
+            "name": personName}).distinct('match')
+        res['title'] = mycol.find({"organizationName": organizationName, "collegeName": collegeName, \
+            "name": personName}).distinct('title')
+        res['phone'] = mycol.find({"organizationName": organizationName, "collegeName": collegeName, \
+            "name": personName}).distinct('phone')
+        res['email'] = mycol.find({"organizationName": organizationName, "collegeName": collegeName, \
+            "name": personName}).distinct('email')
+        res['website'] = mycol.find({"organizationName": organizationName, "collegeName": collegeName, \
+            "name": personName}).distinct('website')
         myclient.close()
         return res
 
