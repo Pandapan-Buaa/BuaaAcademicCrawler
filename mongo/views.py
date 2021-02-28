@@ -6,7 +6,8 @@ from rest_framework.parsers import JSONParser
 from rest_framework_jwt.serializers import jwt_payload_handler, jwt_encode_handler
 from rest_framework import permissions
 from mongo.utils import getAll, getByOrganizationName, getOrganizationNameList, getCollegeNameList, \
-    getByOrganizationNameAndCollegeName, getUrlByOrganizationNameAndCollegeName, addUrl, updateUrl
+    getByOrganizationNameAndCollegeName, getUrlByOrganizationNameAndCollegeName, addUrl, updateUrl, \
+    getPersonNameList, getPersonInfoByName
 from buaaac import settings
 from django.views.decorators.csrf import csrf_exempt
 import time
@@ -96,6 +97,28 @@ class getCollegeName(APIView):
     def get(self, request):
         res = {}
         res["data"] = getCollegeNameList(request.GET['database'], request.GET['organizationName'])
+        res["code"] = 20000
+        return Response(res)
+
+
+class getPersonName(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request):
+        res = {}
+        res["data"] = getPersonNameList(request.GET['database'], request.GET['organizationName'], \
+            request.GET['collegeName'])
+        res["code"] = 20000
+        return Response(res)
+
+
+class getPersonInfo(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request):
+        res = {}
+        res["data"] = getPersonInfoByName(request.GET['database'], request.GET['organizationName'], \
+            request.GET['collegeName'], request.GET['name'])
         res["code"] = 20000
         return Response(res)
 
