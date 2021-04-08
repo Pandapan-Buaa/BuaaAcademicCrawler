@@ -318,7 +318,7 @@ export default {
       for (var i = 0; i < obj.length; i++) {
         for (var j = i + 1; j < obj.length;) {
           if (obj[i].organizationName === obj[j].organizationName && obj[i].collegeName === obj[j].collegeName) { // 通过photoid属性进行匹配；
-            obj.splice(j, 1)// 去除重复的对象；
+            obj.splice(i, 1)// 去除重复的对象；
           } else {
             j++
           }

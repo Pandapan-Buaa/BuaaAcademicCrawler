@@ -134,24 +134,54 @@
             style="width: 100%"
             align="center"
           >
-            <el-table-column
-              prop="name"
-              label="姓名"
-              width="200"
-              align="center"
-            />
-            <el-table-column
-              prop="organizationName"
-              label="所在大学"
-              width="500"
-              align="center"
-            />
-            <el-table-column
-              prop="collegeName"
-              label="所在院系"
-              width="300"
-              align="center"
-            />
+                     <el-table-column
+            prop="mongoid"
+            label="MongoId"
+            width="200"
+            align="center"
+          />
+          <el-table-column
+            prop="zhituid"
+            label="知兔Id"
+            width="200"
+            align="center"
+          />
+          <el-table-column
+            prop="name"
+            label="姓名"
+            width="200"
+            align="center"
+          />
+          <el-table-column
+            prop="organizationName"
+            label="所在大学"
+            width="500"
+            align="center"
+          />
+          <el-table-column
+            prop="collegeName"
+            label="所在院系"
+            width="300"
+            align="center"
+          />
+          <el-table-column
+            prop="title"
+            label="职称"
+            width="300"
+            align="center"
+          />
+          <el-table-column
+            prop="email"
+            label="邮箱"
+            width="300"
+            align="center"
+          />
+          <el-table-column
+            prop="phone"
+            label="电话"
+            width="300"
+            align="center"
+          />
           </el-table>
           <el-pagination
             v-if="!debug || detailMatchStatu===100"
@@ -166,7 +196,7 @@
             @current-change="handleCurrentChange"
           />
           <el-button class="next-button" :disabled="debug && detailMatchExcBtn" type="primary" @click="next">下一步</el-button>
-          <el-button class="exc-button" :disabled="debug && detailMatchExcBtn" type="success" @click="axiosDetail">执行</el-button>
+          <el-button class="exc-button" :disabled="debug && detailMatchExcBtn" type="success" @click="axiosDetailMatch">执行</el-button>
         </el-card>
     </el-row>
   </el-main>
@@ -305,7 +335,8 @@ export default {
         for (var key of Object.keys(obj)) {
           var objElement = obj[key]
           var splitStr = objElement.split(' ')
-          this.detailMatchTableData.push({ organizationName: splitStr[0], collegeName: splitStr[1], name: splitStr[2] })
+          // this.detailMatchTableData.push({ organizationName: splitStr[0], collegeName: splitStr[1], name: splitStr[2] })
+          this.detailMatchTableData.push({ organizationName: splitStr[0], collegeName: splitStr[1], name: splitStr[2], title: splitStr[3], email: splitStr[4], phone: splitStr[5], mongoid: splitStr[6], zhituid: splitStr[7] })
           // console.log(objElement)
         }
       }).catch()
