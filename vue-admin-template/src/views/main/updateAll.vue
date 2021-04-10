@@ -3,7 +3,7 @@
     <el-row>
       <el-col :span="24">
         <el-steps :active="active" finish-status="success" simple style="margin-top: 10px">
-          <el-step title="步骤1"  />
+          <el-step title="步骤1" />
           <el-step title="步骤2" />
           <el-step title="步骤3" />
         </el-steps>
@@ -68,84 +68,21 @@
       </el-card>
     </el-row>
     <el-row v-if="active===2" type="flex" justify="left" class="active">
-        <el-card class="box-card">
-          <div slot="header" class="clearfix">
-            <h2 style="font-weight: 300; text-align: center">更新反爬虫详情</h2>
-          </div>
-          <div class="text item">
-            <h3 style="font-weight: 300; text-align: center">处  理  进  度</h3>
-            <div v-if="antiCrawlerStatu!=0">共有{{ antiCrawlerSize }}条数据</div></div>
-          <el-progress :text-inside="true" :stroke-width="20" :percentage="antiCrawlerStatu" status="success" class="progress" />
-          <el-table
-            class="dataTable"
-            v-if="!debug || antiCrawlerStatu===100"
-            :data="antiCrawlerTableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
-            style="width: 100%"
-            align="center"
-          >
-            <el-table-column
-              prop="name"
-              label="姓名"
-              width="200"
-              align="center"
-            />
-            <el-table-column
-              prop="organizationName"
-              label="所在大学"
-              width="500"
-              align="center"
-            />
-            <el-table-column
-              prop="collegeName"
-              label="所在院系"
-              width="300"
-              align="center"
-            />
-          </el-table>
-          <el-pagination
-            v-if="!debug || antiCrawlerStatu===100"
-            class="pagination"
-            align="center"
-            :current-page="currentPage"
-            :page-sizes="[1,5,10,20]"
-            :page-size="pageSize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="antiCrawlerTableData.length"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-          />
-          <el-button class="next-button" :disabled="debug && antiCrawlerExcBtn" type="primary" @click="next">下一步</el-button>
-          <el-button class="exc-button" :disabled="debug && antiCrawlerExcBtn" type="success" @click="axiosAntiCrawler">执行</el-button>
-        </el-card>
-    </el-row>
-    <el-row v-if="active===3" type="flex" justify="left" class="active">
-        <el-card class="box-card">
-          <div slot="header" class="clearfix">
-            <h2 style="font-weight: 300; text-align: center">匹配学者信息</h2>
-          </div>
-          <div class="text item">
-            <h3 style="font-weight: 300; text-align: center">处  理  进  度</h3>
-            <div v-if="detailMatchStatu!=0">共有{{ detailMatchSize }}条数据</div></div>
-          <el-progress :text-inside="true" :stroke-width="20" :percentage="detailMatchStatu" status="success" class="progress" />
-          <el-table
-            class="dataTable"
-            v-if=" !debug || detailMatchStatu===100"
-            :data="detailMatchTableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
-            style="width: 100%"
-            align="center"
-          >
-                     <el-table-column
-            prop="mongoid"
-            label="MongoId"
-            width="200"
-            align="center"
-          />
-          <el-table-column
-            prop="zhituid"
-            label="知兔Id"
-            width="200"
-            align="center"
-          />
+      <el-card class="box-card">
+        <div slot="header" class="clearfix">
+          <h2 style="font-weight: 300; text-align: center">更新反爬虫详情</h2>
+        </div>
+        <div class="text item">
+          <h3 style="font-weight: 300; text-align: center">处  理  进  度</h3>
+          <div v-if="antiCrawlerStatu!=0">共有{{ antiCrawlerSize }}条数据</div></div>
+        <el-progress :text-inside="true" :stroke-width="20" :percentage="antiCrawlerStatu" status="success" class="progress" />
+        <el-table
+          v-if="!debug || antiCrawlerStatu===100"
+          class="dataTable"
+          :data="antiCrawlerTableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+          style="width: 100%"
+          align="center"
+        >
           <el-table-column
             prop="name"
             label="姓名"
@@ -164,40 +101,104 @@
             width="300"
             align="center"
           />
+        </el-table>
+        <el-pagination
+          v-if="!debug || antiCrawlerStatu===100"
+          class="pagination"
+          align="center"
+          :current-page="currentPage"
+          :page-sizes="[1,5,10,20]"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="antiCrawlerTableData.length"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+        />
+        <el-button class="next-button" :disabled="debug && antiCrawlerExcBtn" type="primary" @click="next">下一步</el-button>
+        <el-button class="exc-button" :disabled="debug && antiCrawlerExcBtn" type="success" @click="axiosAntiCrawler">执行</el-button>
+      </el-card>
+    </el-row>
+    <el-row v-if="active===3" type="flex" justify="left" class="active">
+      <el-card class="box-card">
+        <div slot="header" class="clearfix">
+          <h2 style="font-weight: 300; text-align: center">匹配学者信息</h2>
+        </div>
+        <div class="text item">
+          <h3 style="font-weight: 300; text-align: center">处  理  进  度</h3>
+          <div v-if="detailMatchStatu!=0">共有{{ detailMatchSize }}条数据</div></div>
+        <el-progress :text-inside="true" :stroke-width="20" :percentage="detailMatchStatu" status="success" class="progress" />
+        <el-table
+          v-if=" !debug || detailMatchStatu===100"
+          class="dataTable tb-edit"
+          :data="detailMatchTableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+          style="width: 100%"
+          highlight-current-row
+          @row-click="handleCurrent"
+        >
+          <el-table-column label="操作">
+            <template scope="scope">
+              <el-button type="primary" size="small" @click="handleUpdate(scope.$index, scope.row)">上传修改</el-button>
+              <!--              <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>-->
+            </template>
+          </el-table-column>
           <el-table-column
-            prop="title"
-            label="职称"
-            width="300"
+            prop="mongoid"
+            label="MongoId"
+            width="200"
             align="center"
           />
           <el-table-column
-            prop="email"
-            label="邮箱"
-            width="300"
+            prop="zhituid"
+            label="知兔Id"
+            width="200"
             align="center"
           />
-          <el-table-column
-            prop="phone"
-            label="电话"
-            width="300"
-            align="center"
-          />
-          </el-table>
-          <el-pagination
-            v-if="!debug || detailMatchStatu===100"
-            class="pagination"
-            align="center"
-            :current-page="currentPage"
-            :page-sizes="[1,5,10,20]"
-            :page-size="pageSize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="detailMatchTableData.length"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-          />
-          <el-button class="next-button" :disabled="debug && detailMatchExcBtn" type="primary" @click="next">下一步</el-button>
-          <el-button class="exc-button" :disabled="debug && detailMatchExcBtn" type="success" @click="axiosDetailMatch">执行</el-button>
-        </el-card>
+          <el-table-column label="姓名">
+            <template scope="scope">
+              <el-input v-model="scope.row.name" size="small" placeholder="请输入内容" @change="handleEdit(scope.$index, scope.row)" /> <span>{{ scope.row.name }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="所在大学">
+            <template scope="scope">
+              <el-input v-model="scope.row.organizationName" size="small" placeholder="请输入内容" @change="handleEdit(scope.$index, scope.row)" /> <span>{{ scope.row.organizationName }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="所在院系">
+            <template scope="scope">
+              <el-input v-model="scope.row.collegeName" size="small" placeholder="请输入内容" @change="handleEdit(scope.$index, scope.row)" /> <span>{{ scope.row.collegeName }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="职称">
+            <template scope="scope">
+              <el-input v-model="scope.row.title" size="small" placeholder="请输入内容" @change="handleEdit(scope.$index, scope.row)" /> <span>{{ scope.row.title }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="邮箱">
+            <template scope="scope">
+              <el-input v-model="scope.row.email" size="small" placeholder="请输入内容" @change="handleEdit(scope.$index, scope.row)" /> <span>{{ scope.row.email }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="电话">
+            <template scope="scope">
+              <el-input v-model="scope.row.phone" size="small" placeholder="请输入内容" @change="handleEdit(scope.$index, scope.row)" /> <span>{{ scope.row.phone }}</span>
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-pagination
+          v-if="!debug || detailMatchStatu===100"
+          class="pagination"
+          align="center"
+          :current-page="currentPage"
+          :page-sizes="[1,5,10,20]"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="detailMatchTableData.length"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+        />
+        <el-button class="next-button" :disabled="debug && detailMatchExcBtn" type="primary" @click="next">下一步</el-button>
+        <el-button class="exc-button" :disabled="debug && detailMatchExcBtn" type="success" @click="axiosDetailMatch">执行</el-button>
+      </el-card>
     </el-row>
   </el-main>
 
@@ -210,7 +211,8 @@ import {
   detail,
   detailMatch,
   detailMatchStatus,
-  detailStatus, updateStatus
+  detailStatus, updateStatus,
+  updateScholar
 } from '@/api/updateAll'
 
 export default {
@@ -259,6 +261,30 @@ export default {
     }).catch()
   },
   methods: {
+    handleCurrent(row, event, column) {
+      // console.log(row, event, column)
+    },
+    handleEdit(index, row) {
+      // console.log(index, row)
+    },
+    handleUpdate(index, row) {
+      console.log(row)
+      var id = row.mongoid
+      var name = row.name
+      var organizationName = row.organizationName
+      var collegeName = row.collegeName
+      var title = row.title
+      var email = row.email
+      var phone = row.phone
+
+      updateScholar(id, name, organizationName, collegeName, title, email, phone
+      ).then(
+        this.$message({
+          message: '修改成功 ' + id + ' ' + name,
+          type: 'success'
+        }))
+    },
+
     refreshDetailStatus() {
       detailStatus().then(response => {
         var str = response['data']
@@ -417,7 +443,6 @@ export default {
   margin-top: 10px;
 }
 
-
 .clearfix:before,
 .clearfix:after {
   display: table;
@@ -434,4 +459,15 @@ export default {
   margin-right: auto;
   margin: auto;
 }
+
+.tb-edit .el-input {
+  display: none
+}
+.tb-edit .current-row .el-input {
+  display: block
+}
+.tb-edit .current-row .el-input+span {
+  display: none
+}
+
 </style>

@@ -271,11 +271,19 @@
           </div>
           <el-progress :text-inside="true" :stroke-width="20" :percentage="detailMatchStatu" status="success" class="progress" />
           <el-table
-            class="dataTable"
             v-if=" !debug || detailMatchStatu===100"
+            class="dataTable tb-edit"
             :data="detailMatchTableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
             style="width: 100%"
+            highlight-current-row
+            @row-click="handleCurrent"
           >
+            <el-table-column label="操作">
+              <template scope="scope">
+                <el-button  type="primary" size="small" @click="handleUpdate(scope.$index, scope.row)">上传修改</el-button>
+                <!--              <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>-->
+              </template>
+            </el-table-column>
             <el-table-column
               prop="mongoid"
               label="MongoId"
@@ -288,42 +296,36 @@
               width="200"
               align="center"
             />
-            <el-table-column
-              prop="name"
-              label="姓名"
-              width="200"
-              align="center"
-            />
-            <el-table-column
-              prop="organizationName"
-              label="所在大学"
-              width="500"
-              align="center"
-            />
-            <el-table-column
-              prop="collegeName"
-              label="所在院系"
-              width="300"
-              align="center"
-            />
-            <el-table-column
-              prop="title"
-              label="职称"
-              width="300"
-              align="center"
-            />
-            <el-table-column
-              prop="email"
-              label="邮箱"
-              width="300"
-              align="center"
-            />
-            <el-table-column
-              prop="phone"
-              label="电话"
-              width="300"
-              align="center"
-            />
+            <el-table-column label="姓名">
+              <template scope="scope">
+                <el-input v-model="scope.row.name" size="small" placeholder="请输入内容" @change="handleEdit(scope.$index, scope.row)" /> <span>{{ scope.row.name }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="所在大学">
+              <template scope="scope">
+                <el-input v-model="scope.row.organizationName" size="small" placeholder="请输入内容" @change="handleEdit(scope.$index, scope.row)" /> <span>{{ scope.row.organizationName }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="所在院系">
+              <template scope="scope">
+                <el-input v-model="scope.row.collegeName" size="small" placeholder="请输入内容" @change="handleEdit(scope.$index, scope.row)" /> <span>{{ scope.row.collegeName }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="职称">
+              <template scope="scope">
+                <el-input v-model="scope.row.title" size="small" placeholder="请输入内容" @change="handleEdit(scope.$index, scope.row)" /> <span>{{ scope.row.title }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="邮箱">
+              <template scope="scope">
+                <el-input v-model="scope.row.email" size="small" placeholder="请输入内容" @change="handleEdit(scope.$index, scope.row)" /> <span>{{ scope.row.email }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="电话">
+              <template scope="scope">
+                <el-input v-model="scope.row.phone" size="small" placeholder="请输入内容" @change="handleEdit(scope.$index, scope.row)" /> <span>{{ scope.row.phone }}</span>
+              </template>
+            </el-table-column>
           </el-table>
           <el-pagination
             v-if="!debug || detailMatchStatu===100"
@@ -350,6 +352,7 @@
 import { mapGetters } from 'vuex'
 import { getToken } from '@/utils/auth'
 import { updateStatus, loadConfig, loadConfigStatus, crawler, crawlerStatus, imgCrawler, imgCrawlerStatus, detail, detailStatus, antiCrawler, antiCrawlerStatus, detailMatch, detailMatchStatus } from '@/api/updateByXpath'
+import { updateScholar } from '@/api/updateByOrganization'
 
 export default {
   name: 'UpdateByXpath',
@@ -406,6 +409,31 @@ export default {
     clearInterval(this.timer)
   },
   methods: {
+    handleCurrent(row, event, column) {
+      // console.log(row, event, column)
+    },
+    handleEdit(index, row) {
+      // console.log(index, row)
+    },
+    handleUpdate(index, row) {
+      console.log(row)
+      var id = row.mongoid
+      var name = row.name
+      var organizationName = row.organizationName
+      var collegeName = row.collegeName
+      var title = row.title
+      var email = row.email
+      var phone = row.phone
+
+      updateScholar(id, name, organizationName, collegeName, title, email, phone
+      ).then(
+        this.$message({
+          message: '修改成功 ' + id + ' ' + name,
+          type: 'success'
+        }))
+    },
+
+
     refreshConfigStatus() {
       loadConfigStatus().then(response => {
         var str = response['data']
@@ -669,5 +697,15 @@ export default {
 }
 .pagination{
   margin-top:10px;
+}
+
+.tb-edit .el-input {
+  display: none
+}
+.tb-edit .current-row .el-input {
+  display: block
+}
+.tb-edit .current-row .el-input+span {
+  display: none
 }
 </style>

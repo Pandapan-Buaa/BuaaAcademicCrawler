@@ -1,4 +1,5 @@
 import request from '@/utils/jrequest'
+import mrequest from '@/utils/request'
 
 export function loadConfig() {
   return request({
@@ -80,5 +81,21 @@ export function updateStatus() {
   return request({
     url: '/update_status/',
     method: 'get'
+  })
+}
+
+export function updateScholar(id, name, organizationName, collegeName, title, email, phone) {
+  return mrequest({
+    url: '/mongo/updateScholarById/',
+    method: 'post',
+    params: {
+      id: id,
+      name: name,
+      organizationName: organizationName,
+      collegeName: collegeName,
+      title: title,
+      email: email,
+      phone: phone
+    }
   })
 }
