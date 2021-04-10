@@ -147,35 +147,20 @@
           <h3 style="font-weight: 300; text-align: center">处  理  进  度</h3>
           <div v-if="detailMatchStatu!=0">共有{{ detailMatchSize }}条数据</div></div>
         <el-progress :text-inside="true" :stroke-width="20" :percentage="detailMatchStatu" status="success" class="progress" />
-        <el-table :data="tableData" class="tb-edit" style="width: 100%" highlight-current-row @row-click="handleCurrent">
-          <el-table-column label="日期" width="180">
-            <template scope="scope">
-              <el-input v-model="scope.row.date" size="small" placeholder="请输入内容" @change="handleEdit(scope.$index, scope.row)" /> <span>{{ scope.row.date }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="姓名" width="180">
-            <template scope="scope">
-              <el-input v-model="scope.row.name" size="small" placeholder="请输入内容" @change="handleEdit(scope.$index, scope.row)" /> <span>{{ scope.row.name }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column prop="address" label="地址">
-            <template scope="scope">
-              <el-input v-model="scope.row.address" size="small" placeholder="请输入内容" @change="handleEdit(scope.$index, scope.row)" /> <span>{{ scope.row.address }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="操作">
-            <template scope="scope">
-              <!--<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>-->
-              <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
         <el-table
           v-if=" !debug || detailMatchStatu===100"
-          class="dataTable"
+          class="dataTable tb-edit"
           :data="detailMatchTableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
           style="width: 100%"
+          highlight-current-row
+          @row-click="handleCurrent"
         >
+          <el-table-column label="操作">
+            <template scope="scope">
+              <el-button  type="primary" size="small" @click="handleUpdate(scope.$index, scope.row)">上传修改</el-button>
+              <!--              <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>-->
+            </template>
+          </el-table-column>
           <el-table-column
             prop="mongoid"
             label="MongoId"
@@ -188,42 +173,36 @@
             width="200"
             align="center"
           />
-          <el-table-column
-            prop="name"
-            label="姓名"
-            width="200"
-            align="center"
-          />
-          <el-table-column
-            prop="organizationName"
-            label="所在大学"
-            width="500"
-            align="center"
-          />
-          <el-table-column
-            prop="collegeName"
-            label="所在院系"
-            width="300"
-            align="center"
-          />
-          <el-table-column
-            prop="title"
-            label="职称"
-            width="300"
-            align="center"
-          />
-          <el-table-column
-            prop="email"
-            label="邮箱"
-            width="300"
-            align="center"
-          />
-          <el-table-column
-            prop="phone"
-            label="电话"
-            width="300"
-            align="center"
-          />
+          <el-table-column label="姓名">
+            <template scope="scope">
+              <el-input v-model="scope.row.name" size="small" placeholder="请输入内容" @change="handleEdit(scope.$index, scope.row)" /> <span>{{ scope.row.name }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="所在大学">
+            <template scope="scope">
+              <el-input v-model="scope.row.organizationName" size="small" placeholder="请输入内容" @change="handleEdit(scope.$index, scope.row)" /> <span>{{ scope.row.organizationName }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="所在院系">
+            <template scope="scope">
+              <el-input v-model="scope.row.collegeName" size="small" placeholder="请输入内容" @change="handleEdit(scope.$index, scope.row)" /> <span>{{ scope.row.collegeName }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="职称">
+            <template scope="scope">
+              <el-input v-model="scope.row.title" size="small" placeholder="请输入内容" @change="handleEdit(scope.$index, scope.row)" /> <span>{{ scope.row.title }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="邮箱">
+            <template scope="scope">
+              <el-input v-model="scope.row.email" size="small" placeholder="请输入内容" @change="handleEdit(scope.$index, scope.row)" /> <span>{{ scope.row.email }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="电话">
+            <template scope="scope">
+              <el-input v-model="scope.row.phone" size="small" placeholder="请输入内容" @change="handleEdit(scope.$index, scope.row)" /> <span>{{ scope.row.phone }}</span>
+            </template>
+          </el-table-column>
         </el-table>
         <el-pagination
           v-if="!debug || detailMatchStatu===100"
@@ -252,7 +231,8 @@ import {
   detail,
   detailMatch,
   detailMatchStatus,
-  detailStatus, updateStatus
+  detailStatus, updateStatus,
+  updateScholar
 } from '@/api/updateByOrganization'
 
 export default {
@@ -284,24 +264,7 @@ export default {
       detailMatchTableData: [],
       currentPage: 1, // 当前页码
       total: 20, // 总条数
-      pageSize: 10, // 每页的数据条数
-      tableData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1517 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1519 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      }]
+      pageSize: 10 // 每页的数据条数
     }
   },
   watch: {
@@ -325,13 +288,27 @@ export default {
   },
   methods: {
     handleCurrent(row, event, column) {
-      console.log(row, event, column, event.currentTarget)
+      // console.log(row, event, column)
     },
     handleEdit(index, row) {
-      console.log(index, row)
+      // console.log(index, row)
     },
-    handleDelete(index, row) {
-      console.log(index, row)
+    handleUpdate(index, row) {
+      console.log(row)
+      var id = row.mongoid
+      var name = row.name
+      var organizationName = row.organizationName
+      var collegeName = row.collegeName
+      var title = row.title
+      var email = row.email
+      var phone = row.phone
+
+      updateScholar(id, name, organizationName, collegeName, title, email, phone
+      ).then(
+        this.$message({
+          message: '修改成功 ' + id + ' ' + name,
+          type: 'success'
+        }))
     },
 
     refreshDetailStatus() {
@@ -340,7 +317,7 @@ export default {
         var obj = JSON.parse(str)
         this.detailStatu = obj.progress
         this.detailSize = obj.size
-        console.log(response)
+        // console.log(response)
         if (obj.progress === 100) {
           this.detailNextBtn = false
         }
@@ -367,7 +344,7 @@ export default {
         var obj = JSON.parse(str)
         this.antiCrawlerStatu = obj.progress
         this.antiCrawlerSize = obj.size
-        console.log(response)
+        // console.log(response)
         if (obj.progress === 100) {
           this.antiCrawlerNextBtn = false
         }
@@ -403,7 +380,7 @@ export default {
     axiosDetailMatch() {
       this.detailMatchExcBtn = true
       detailMatch(this.organizationValue, this.collegeValue).then(response => {
-        console.log(response['data'])
+        // console.log(response['data'])
         var str = response['data']
         var obj = JSON.parse(str)
         this.total = obj.len

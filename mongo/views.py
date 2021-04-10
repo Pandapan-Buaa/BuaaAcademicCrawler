@@ -7,7 +7,7 @@ from rest_framework_jwt.serializers import jwt_payload_handler, jwt_encode_handl
 from rest_framework import permissions
 from mongo.utils import getAll, getByOrganizationName, getOrganizationNameList, getCollegeNameList, \
     getByOrganizationNameAndCollegeName, getUrlByOrganizationNameAndCollegeName, addUrl, updateUrl, \
-    getPersonNameList, getPersonInfoByName
+    getPersonNameList, getPersonInfoByName,updateScholarById
 from buaaac import settings
 from django.views.decorators.csrf import csrf_exempt
 import time
@@ -172,3 +172,21 @@ class exportAsCSV(APIView):
                 continue
 
         return response
+
+
+class updateById(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request):
+        data = {
+            "name":request.GET["name"],
+            "title":request.GET['title'],
+            'organizationName':request.GET['organizationName'],
+            'collegeName':request.GET['collegeName'],
+            "email":request.GET['email'],
+            "phone":request.GET['phone']
+        }
+        updateScholarById(request.GET['id'],data)
+        data["id"] = request.GET['id']
+        data["code"] = 20000
+        return Response(data,status=status.HTTP_200_OK)

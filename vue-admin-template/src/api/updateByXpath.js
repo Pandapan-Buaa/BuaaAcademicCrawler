@@ -1,4 +1,5 @@
 import request from '@/utils/jrequest'
+
 export function loadConfig() {
   return request({
     url: '/load_config/',

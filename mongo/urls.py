@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^getPersonInfo/$', views.getPersonInfo.as_view()),
     url(r'^getUrl/$', views.getUrlByName.as_view()),
     url(r'^exportCsv/$', views.exportAsCSV.as_view()),
+    url(r'^updateScholarById/$', views.updateById.as_view()),
 ]
