@@ -135,12 +135,6 @@
           highlight-current-row
           @row-click="handleCurrent"
         >
-          <el-table-column label="操作">
-            <template scope="scope">
-              <el-button type="primary" size="small" @click="handleUpdate(scope.$index, scope.row)">上传修改</el-button>
-              <!--              <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>-->
-            </template>
-          </el-table-column>
           <el-table-column
             prop="mongoid"
             label="MongoId"
@@ -183,6 +177,12 @@
               <el-input v-model="scope.row.phone" size="small" placeholder="请输入内容" @change="handleEdit(scope.$index, scope.row)" /> <span>{{ scope.row.phone }}</span>
             </template>
           </el-table-column>
+          <el-table-column label="操作">
+            <template scope="scope">
+              <el-button type="primary" size="small" @click="handleUpdate(scope.$index, scope.row)">上传修改</el-button>
+              <!--              <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>-->
+            </template>
+          </el-table-column>
         </el-table>
         <el-pagination
           v-if="!debug || detailMatchStatu===100"
@@ -200,6 +200,34 @@
         <el-button class="exc-button" :disabled="debug && detailMatchExcBtn" type="success" @click="axiosDetailMatch">执行</el-button>
       </el-card>
     </el-row>
+    <el-row v-if="errorTableData.length != 0" type="flex" justify="left" class="active">
+      <el-col :span="22" :offset="1">
+        <el-card class="box-card">
+          <div class="text item">
+            <h3 style="font-weight: 300; text-align: center">错 误 日 志</h3>
+            <div>共有{{ errorTableData.length }}条数据</div>
+          </div>
+          <el-table
+            :data="errorTableData"
+            style="width: 100%"
+            max-height="300"
+          >
+
+            <el-table-column
+              fixed
+              prop="id"
+              label="id"
+              width="150"
+            />
+            <el-table-column
+              prop="error"
+              label="错误提示"
+              width="1000"
+            />
+          </el-table>
+        </el-card>
+      </el-col>
+    </el-row>
   </el-main>
 
 </template>
@@ -212,8 +240,10 @@ import {
   detailMatch,
   detailMatchStatus,
   detailStatus, updateStatus,
-  updateScholar
+  updateScholar,
+  getErrors
 } from '@/api/updateAll'
+
 
 export default {
   name: 'UpdateByOrganization',
@@ -236,6 +266,7 @@ export default {
       detailTableData: [],
       antiCrawlerTableData: [],
       detailMatchTableData: [],
+      errorTableData: [],
       currentPage: 1, // 当前页码
       total: 20, // 总条数
       pageSize: 10 // 每页的数据条数
@@ -284,7 +315,17 @@ export default {
           type: 'success'
         }))
     },
-
+    fillErrorTable() {
+      getErrors().then(response => {
+        var str = response['data']
+        var obj = JSON.parse(str)
+        console.log(obj.length)
+        for (var key of Object.keys(obj)) {
+          var objElement = obj[key]
+          this.errorTableData.push({ id: key, error: objElement })
+        }
+      }).catch()
+    },
     refreshDetailStatus() {
       detailStatus().then(response => {
         var str = response['data']
@@ -310,6 +351,7 @@ export default {
           this.detailTableData.push({ organizationName: splitStr[0], collegeName: splitStr[1], name: splitStr[2] })
           // console.log(objElement)
         }
+        this.fillErrorTable()
       }).catch()
     },
     refreshAntiCrawlerStatus() {
@@ -337,6 +379,7 @@ export default {
           this.antiCrawlerTableData.push({ organizationName: splitStr[0], collegeName: splitStr[1], name: splitStr[2] })
           // console.log(objElement)
         }
+        this.fillErrorTable()
       }).catch()
     },
     refreshDetailMatchStatus() {
@@ -365,11 +408,14 @@ export default {
           this.detailMatchTableData.push({ organizationName: splitStr[0], collegeName: splitStr[1], name: splitStr[2], title: splitStr[3], email: splitStr[4], phone: splitStr[5], mongoid: splitStr[6], zhituid: splitStr[7] })
           // console.log(objElement)
         }
+        this.fillErrorTable()
       }).catch()
     },
     next() {
       if (this.active++ > 2) {
-        this.active = 1
+        // this.active = 1
+        // this.timer = setInterval(this.refreshDetailStatus, 1000)
+        location.reload()
       }
       if (this.active === 2) {
         clearInterval(this.timer)
@@ -379,6 +425,7 @@ export default {
         this.timer = setInterval(this.refreshDetailMatchStatus, 1000)
       }
       updateStatus().then().catch()
+      this.errorTableData = []
       this.detailTableData = []
       this.antiCrawlerTableData = []
       this.detailMatchTableData = []

@@ -35,11 +35,11 @@
             <div slot="tip" class="el-upload__tip">请上传包含xpath的txt文件</div>
           </el-upload>
           <div slot="header" class="clearfix">
-              <h2 style="font-weight: 300; text-align: center">更新详情</h2>
+            <h2 style="font-weight: 300; text-align: center">更新详情</h2>
           </div>
           <div class="text item">
-              <h3 style="font-weight: 300; text-align: center">导入xpath，处理进度</h3>
-              <div v-if="configStatu!=0">共有{{ configSize }}条xpath数据</div>
+            <h3 style="font-weight: 300; text-align: center">导入xpath，处理进度</h3>
+            <div v-if="configStatu!=0">共有{{ configSize }}条xpath数据</div>
           </div>
           <el-progress :text-inside="true" :stroke-width="20" :percentage="configStatu" status="success" class="progress" />
           <el-button type="success" plain class="next-button" :disabled="debug && configNextBtn" @click="next">下一步</el-button>
@@ -50,17 +50,17 @@
     <el-row v-if="active==2" type="flex" justify="left" class="active">
       <el-col :span="22" :offset="1">
         <el-card class="box-card">
-            <div slot="header" class="clearfix">
-              <h2 style="font-weight: 300; text-align: center">更新学者路径详情</h2>
-            </div>
-            <div class="text item">
-              <h3 style="font-weight: 300; text-align: center">处理进度</h3>
+          <div slot="header" class="clearfix">
+            <h2 style="font-weight: 300; text-align: center">更新学者路径详情</h2>
+          </div>
+          <div class="text item">
+            <h3 style="font-weight: 300; text-align: center">处理进度</h3>
             <div v-if="crawlerStatu!=0">共有{{ crawlerSize }}条数据</div>
           </div>
           <el-progress :text-inside="true" :stroke-width="20" :percentage="crawlerStatu" status="success" class="progress" />
           <el-table
-            class="dataTable"
             v-if="!debug || crawlerStatu===100"
+            class="dataTable"
             :data="crawlerTableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
             style="width: 100%"
           >
@@ -103,17 +103,17 @@
     <el-row v-if="active==3" type="flex" justify="left" class="active">
       <el-col :span="22" :offset="1">
         <el-card class="box-card">
-            <div slot="header" class="clearfix">
-              <h2 style="font-weight: 300; text-align: center">处理特殊数据详情</h2>
-            </div>
-            <div class="text item">
-              <h3 style="font-weight: 300; text-align: center">处理进度</h3>
+          <div slot="header" class="clearfix">
+            <h2 style="font-weight: 300; text-align: center">处理特殊数据详情</h2>
+          </div>
+          <div class="text item">
+            <h3 style="font-weight: 300; text-align: center">处理进度</h3>
             <div v-if="imgCrawlerStatu!=0">共有{{ imgCrawlerSize }}条数据</div>
           </div>
           <el-progress :text-inside="true" :stroke-width="20" :percentage="imgCrawlerStatu" status="success" class="progress" />
           <el-table
-            class="dataTable"
             v-if="!debug || imgCrawlerStatu===100"
+            class="dataTable"
             :data="imgCrawlerTableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
             style="width: 100%"
           >
@@ -156,17 +156,17 @@
     <el-row v-if="active==4" type="flex" justify="left" class="active">
       <el-col :span="22" :offset="1">
         <el-card class="box-card">
-            <div slot="header" class="clearfix">
-              <h2 style="font-weight: 300; text-align: center">更新详情</h2>
-            </div>
-            <div class="text item">
-              <h3 style="font-weight: 300; text-align: center">处理进度</h3>
+          <div slot="header" class="clearfix">
+            <h2 style="font-weight: 300; text-align: center">更新详情</h2>
+          </div>
+          <div class="text item">
+            <h3 style="font-weight: 300; text-align: center">处理进度</h3>
             <div v-if="detailStatu!=0">共有{{ detailSize }}条数据</div>
           </div>
           <el-progress :text-inside="true" :stroke-width="20" :percentage="detailStatu" status="success" class="progress" />
           <el-table
-            class="dataTable"
             v-if="!debug || detailStatu===100"
+            class="dataTable"
             :data="detailTableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
             style="width: 100%"
           >
@@ -209,17 +209,17 @@
     <el-row v-if="active==5" type="flex" justify="left" class="active">
       <el-col :span="22" :offset="1">
         <el-card class="box-card">
-            <div slot="header" class="clearfix">
-              <h2 style="font-weight: 300; text-align: center">更新反爬虫详情</h2>
-            </div>
-            <div class="text item">
-              <h3 style="font-weight: 300; text-align: center">处理进度</h3>
+          <div slot="header" class="clearfix">
+            <h2 style="font-weight: 300; text-align: center">更新反爬虫详情</h2>
+          </div>
+          <div class="text item">
+            <h3 style="font-weight: 300; text-align: center">处理进度</h3>
             <div v-if="antiCrawlerStatu!=0">共有{{ antiCrawlerSize }}条数据</div>
           </div>
           <el-progress :text-inside="true" :stroke-width="20" :percentage="antiCrawlerStatu" status="success" class="progress" />
           <el-table
-            class="dataTable"
             v-if="!debug || antiCrawlerStatu===100"
+            class="dataTable"
             :data="antiCrawlerTableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
             style="width: 100%"
           >
@@ -262,11 +262,11 @@
     <el-row v-if="active==6" type="flex" justify="left" class="active">
       <el-col :span="22" :offset="1">
         <el-card class="box-card">
-            <div slot="header" class="clearfix">
-              <h2 style="font-weight: 300; text-align: center">匹配学者信息详情</h2>
-            </div>
-            <div class="text item">
-              <h3 style="font-weight: 300; text-align: center">处理进度</h3>
+          <div slot="header" class="clearfix">
+            <h2 style="font-weight: 300; text-align: center">匹配学者信息详情</h2>
+          </div>
+          <div class="text item">
+            <h3 style="font-weight: 300; text-align: center">处理进度</h3>
             <div v-if="detailMatchStatu!=0">共有{{ detailMatchSize }}条数据</div>
           </div>
           <el-progress :text-inside="true" :stroke-width="20" :percentage="detailMatchStatu" status="success" class="progress" />
@@ -278,12 +278,6 @@
             highlight-current-row
             @row-click="handleCurrent"
           >
-            <el-table-column label="操作">
-              <template scope="scope">
-                <el-button  type="primary" size="small" @click="handleUpdate(scope.$index, scope.row)">上传修改</el-button>
-                <!--              <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>-->
-              </template>
-            </el-table-column>
             <el-table-column
               prop="mongoid"
               label="MongoId"
@@ -326,6 +320,12 @@
                 <el-input v-model="scope.row.phone" size="small" placeholder="请输入内容" @change="handleEdit(scope.$index, scope.row)" /> <span>{{ scope.row.phone }}</span>
               </template>
             </el-table-column>
+            <el-table-column label="操作">
+              <template scope="scope">
+                <el-button type="primary" size="small" @click="handleUpdate(scope.$index, scope.row)">上传修改</el-button>
+                <!--              <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>-->
+              </template>
+            </el-table-column>
           </el-table>
           <el-pagination
             v-if="!debug || detailMatchStatu===100"
@@ -344,6 +344,34 @@
         </el-card>
       </el-col>
     </el-row>
+    <el-row v-if="errorTableData.length != 0" type="flex" justify="left" class="active">
+      <el-col :span="22" :offset="1">
+      <el-card class="box-card">
+        <div class="text item">
+          <h3 style="font-weight: 300; text-align: center">错 误 日 志</h3>
+          <div>共有{{ errorTableData.length }}条数据</div>
+        </div>
+        <el-table
+          :data="errorTableData"
+          style="width: 100%"
+          max-height="300"
+        >
+
+          <el-table-column
+            fixed
+            prop="id"
+            label="id"
+            width="150"
+          />
+          <el-table-column
+            prop="error"
+            label="错误提示"
+            width="1000"
+          />
+        </el-table>
+      </el-card>
+      </el-col>
+    </el-row>
   </el-main>
 
 </template>
@@ -351,8 +379,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { getToken } from '@/utils/auth'
-import { updateStatus, loadConfig, loadConfigStatus, crawler, crawlerStatus, imgCrawler, imgCrawlerStatus, detail, detailStatus, antiCrawler, antiCrawlerStatus, detailMatch, detailMatchStatus } from '@/api/updateByXpath'
-import { updateScholar } from '@/api/updateByOrganization'
+import { updateStatus, loadConfig, loadConfigStatus, crawler, crawlerStatus, imgCrawler, imgCrawlerStatus, detail, detailStatus, antiCrawler, antiCrawlerStatus, detailMatch, detailMatchStatus, updateScholar, getErrors } from '@/api/updateByXpath'
 
 export default {
   name: 'UpdateByXpath',
@@ -396,6 +423,7 @@ export default {
       detailTableData: [],
       antiCrawlerTableData: [],
       detailMatchTableData: [],
+      errorTableData: [],
       currentPage: 1, // 当前页码
       total: 20, // 总条数
       pageSize: 10 // 每页的数据条数
@@ -432,8 +460,19 @@ export default {
           type: 'success'
         }))
     },
-
-
+    fillErrorTable() {
+      getErrors().then(response => {
+        var str = response['data']
+        var obj = JSON.parse(str)
+        console.log(response)
+        console.log(str)
+        console.log('test')
+        for (var key of Object.keys(obj)) {
+          var objElement = obj[key]
+          this.errorTableData.push({ id: key, error: objElement })
+        }
+      }).catch()
+    },
     refreshConfigStatus() {
       loadConfigStatus().then(response => {
         var str = response['data']
@@ -476,6 +515,7 @@ export default {
           this.crawlerTableData.push({ organizationName: splitStr[0], collegeName: splitStr[1], name: splitStr[2] })
           // console.log(objElement)
         }
+        this.fillErrorTable()
       }).catch()
     },
     refreshImgCrawlerStatus() {
@@ -503,6 +543,7 @@ export default {
           this.imgCrawlerTableData.push({ organizationName: splitStr[0], collegeName: splitStr[1], name: splitStr[2] })
           // console.log(objElement)
         }
+        this.fillErrorTable()
       }).catch()
     },
     refreshDetailStatus() {
@@ -530,6 +571,7 @@ export default {
           this.detailTableData.push({ organizationName: splitStr[0], collegeName: splitStr[1], name: splitStr[2] })
           // console.log(objElement)
         }
+        this.fillErrorTable()
       }).catch()
     },
     refreshAntiCrawlerStatus() {
@@ -557,6 +599,7 @@ export default {
           this.antiCrawlerTableData.push({ organizationName: splitStr[0], collegeName: splitStr[1], name: splitStr[2] })
           // console.log(objElement)
         }
+        this.fillErrorTable()
       }).catch()
     },
     refreshDetailMatchStatus() {
@@ -585,11 +628,14 @@ export default {
           // this.detailMatchTableData.push({ organizationName: splitStr[0], collegeName: splitStr[1], name: splitStr[2] })
           // console.log(objElement)
         }
+        this.fillErrorTable()
       }).catch()
     },
     next() {
       if (this.active++ > 5) {
-        this.active = 1
+        // this.active = 1
+        // this.timer = setInterval(this.refreshConfigStatus, 1000)
+        location.reload()
       }
       if (this.active === 2) {
         clearInterval(this.timer)
@@ -608,6 +654,7 @@ export default {
         this.timer = setInterval(this.refreshDetailMatchStatus, 1000)
       }
       updateStatus().then().catch()
+      this.errorTableData = []
       this.crawlerTableData = []
       this.imgCrawlerTableData = []
       this.detailTableData = []

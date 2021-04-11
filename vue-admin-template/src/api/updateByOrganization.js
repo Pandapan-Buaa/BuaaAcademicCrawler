@@ -60,6 +60,13 @@ export function updateStatus() {
   })
 }
 
+export function getErrors() {
+  return request({
+    url: '/errors/',
+    method: 'get'
+  })
+}
+
 export function updateScholar(id, name, organizationName, collegeName, title, email, phone) {
   return mrequest({
     url: '/mongo/updateScholarById/',
