@@ -162,6 +162,7 @@ export default {
     }
   },
   mounted() {
+    // clearInterval(this.timer)
     getOrganazationName(this.token).then(response => {
       // console.log(response)
       // console.log(response['data'])

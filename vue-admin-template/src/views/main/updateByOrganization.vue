@@ -264,11 +264,19 @@ import {
   updateScholar,
   getErrors
 } from '@/api/updateByOrganization'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'UpdateByOrganization',
+  computed: {
+    ...mapGetters([
+      'name',
+      'token'
+    ])
+  },
   data() {
     return {
+      timeout: 1500,
       debug: false,
       active: 1,
       organizationValue: '', // 选中
@@ -309,13 +317,16 @@ export default {
     }
   },
   mounted() {
-    this.timer = setInterval(this.refreshDetailStatus, 1000)
+    clearInterval(this.timer)
     getOrganazationName(this.token).then(response => {
       this.organizations = response['data']
       this.organizationList = this.organizations.map(item => {
         return { value: `${item}`, label: `${item}` }
       })
     }).catch()
+  },
+  beforeDestroy() {
+    clearInterval(this.timer)
   },
   methods: {
     handleCurrent(row, event, column) {
@@ -365,6 +376,8 @@ export default {
       }).catch()
     },
     axiosDetail() {
+      clearInterval(this.timer)
+      this.timer = setInterval(this.refreshDetailStatus, this.timeout)
       this.detailExcBtn = true
       detail(this.organizationValue, this.collegeValue).then(response => {
         // console.log(response['data'])
@@ -393,6 +406,8 @@ export default {
       }).catch()
     },
     axiosAntiCrawler() {
+      clearInterval(this.timer)
+      this.timer = setInterval(this.refreshAntiCrawlerStatus, this.timeout)
       this.detailExcBtn = true
       antiCrawler(this.organizationValue, this.collegeValue).then(response => {
         // console.log(response['data'])
@@ -421,6 +436,8 @@ export default {
       }).catch()
     },
     axiosDetailMatch() {
+      clearInterval(this.timer)
+      this.timer = setInterval(this.refreshDetailMatchStatus, this.timeout)
       this.detailMatchExcBtn = true
       detailMatch(this.organizationValue, this.collegeValue).then(response => {
         // console.log(response['data'])
@@ -442,14 +459,12 @@ export default {
         // this.active = 1
         // this.timer = setInterval(this.refreshDetailStatus, 1000)
       }
-      if (this.active === 2) {
-        clearInterval(this.timer)
-        this.timer = setInterval(this.refreshAntiCrawlerStatus, 1000)
-      } else if (this.active === 3) {
-        clearInterval(this.timer)
-        this.timer = setInterval(this.refreshDetailMatchStatus, 1000)
-      }
+      // if (this.active === 2) {
+      // } else if (this.active === 3) {
+      //
+      // }
       updateStatus().then().catch()
+      clearInterval(this.timer)
       this.errorTableData = []
       this.detailTableData = []
       this.antiCrawlerTableData = []

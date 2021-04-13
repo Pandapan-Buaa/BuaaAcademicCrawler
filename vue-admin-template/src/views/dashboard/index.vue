@@ -1,8 +1,12 @@
 <template>
-  <div class="dashboard-container">
-    <div class="dashboard-text">学者爬虫系统首页</div>
-    <div class="dashboard-text">用户: {{ name }}</div>
-  </div>
+  <el-card class="box-card">
+    <div slot="header" class="clearfix">
+      <span>学者爬虫系统首页</span>
+    </div>
+    <div class="text item">
+      用户: {{ name }}
+    </div>
+  </el-card>
 </template>
 
 <script>
@@ -12,7 +16,8 @@ export default {
   name: 'Dashboard',
   computed: {
     ...mapGetters([
-      'name'
+      'name',
+      'token'
     ])
   }
 }

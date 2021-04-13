@@ -385,11 +385,13 @@ export default {
   name: 'UpdateByXpath',
   computed: {
     ...mapGetters([
+      'name',
       'token'
     ])
   },
   data() {
     return {
+      timeout: 1500,
       debug: false,
       active: 1,
       myHeaders: { 'Authorization': 'JWT ' + getToken() },
@@ -431,7 +433,7 @@ export default {
     }
   },
   mounted() {
-    this.timer = setInterval(this.refreshConfigStatus, 1000)
+    clearInterval(this.timer)
   },
   beforeDestroy() {
     clearInterval(this.timer)
@@ -485,6 +487,8 @@ export default {
       }).catch()
     },
     axiosLoadConfig() {
+      clearInterval(this.timer)
+      this.timer = setInterval(this.refreshConfigStatus, this.timeout)
       this.configExcBtn = true
       loadConfig().then(response => {
         console.log(response)
@@ -503,6 +507,8 @@ export default {
       }).catch()
     },
     axiosCrawler() {
+      clearInterval(this.timer)
+      this.timer = setInterval(this.refreshCrawlerStatus, this.timeout)
       this.crawlerExcBtn = true
       crawler().then(response => {
         console.log(response['data'])
@@ -531,6 +537,8 @@ export default {
       }).catch()
     },
     axiosImgCrawler() {
+      clearInterval(this.timer)
+      this.timer = setInterval(this.refreshImgCrawlerStatus, this.timeout)
       this.imgCrawlerExcBtn = true
       imgCrawler().then(response => {
         console.log(response['data'])
@@ -559,6 +567,8 @@ export default {
       }).catch()
     },
     axiosDetail() {
+      clearInterval(this.timer)
+      this.timer = setInterval(this.refreshDetailStatus, this.timeout)
       this.detailExcBtn = true
       detail().then(response => {
         // console.log(response['data'])
@@ -587,6 +597,8 @@ export default {
       }).catch()
     },
     axiosAntiCrawler() {
+      clearInterval(this.timer)
+      this.timer = setInterval(this.refreshAntiCrawlerStatus, this.timeout)
       this.detailExcBtn = true
       antiCrawler().then(response => {
         // console.log(response['data'])
@@ -615,6 +627,8 @@ export default {
       }).catch()
     },
     axiosDetailMatch() {
+      clearInterval(this.timer)
+      this.timer = setInterval(this.refreshDetailMatchStatus, this.timeout)
       this.detailMatchExcBtn = true
       detailMatch().then(response => {
         console.log(response['data'])
@@ -637,23 +651,19 @@ export default {
         // this.timer = setInterval(this.refreshConfigStatus, 1000)
         location.reload()
       }
-      if (this.active === 2) {
-        clearInterval(this.timer)
-        this.timer = setInterval(this.refreshCrawlerStatus, 1000)
-      } else if (this.active === 3) {
-        clearInterval(this.timer)
-        this.timer = setInterval(this.refreshImgCrawlerStatus, 1000)
-      } else if (this.active === 4) {
-        clearInterval(this.timer)
-        this.timer = setInterval(this.refreshDetailStatus, 1000)
-      } else if (this.active === 5) {
-        clearInterval(this.timer)
-        this.timer = setInterval(this.refreshAntiCrawlerStatus, 1000)
-      } else if (this.active === 6) {
-        clearInterval(this.timer)
-        this.timer = setInterval(this.refreshDetailMatchStatus, 1000)
-      }
+      // if (this.active === 2) {
+      //
+      // } else if (this.active === 3) {
+      //
+      // } else if (this.active === 4) {
+      //
+      // } else if (this.active === 5) {
+      //
+      // } else if (this.active === 6) {
+      //
+      // }
       updateStatus().then().catch()
+      clearInterval(this.timer)
       this.errorTableData = []
       this.crawlerTableData = []
       this.imgCrawlerTableData = []
