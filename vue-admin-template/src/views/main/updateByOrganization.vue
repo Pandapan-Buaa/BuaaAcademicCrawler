@@ -221,7 +221,7 @@
       </el-card>
     </el-row>
     <el-row v-if="errorTableData.length != 0" type="flex" justify="left" class="active">
-      <el-col :span="22" :offset="1">
+      <el-col>
         <el-card class="box-card">
           <div class="text item">
             <h3 style="font-weight: 300; text-align: center">错 误 日 志</h3>
@@ -353,7 +353,7 @@ export default {
         }))
     },
     fillErrorTable() {
-      getErrors().then(response => {
+      getErrors(this.name).then(response => {
         var str = response['data']
         var obj = JSON.parse(str)
         console.log(obj.length)
@@ -364,7 +364,8 @@ export default {
       }).catch()
     },
     refreshDetailStatus() {
-      detailStatus().then(response => {
+      // console.log(this.name)
+      detailStatus(this.name).then(response => {
         var str = response['data']
         var obj = JSON.parse(str)
         this.detailStatu = obj.progress
@@ -379,7 +380,7 @@ export default {
       clearInterval(this.timer)
       this.timer = setInterval(this.refreshDetailStatus, this.timeout)
       this.detailExcBtn = true
-      detail(this.organizationValue, this.collegeValue).then(response => {
+      detail(this.organizationValue, this.collegeValue, this.name).then(response => {
         // console.log(response['data'])
         var str = response['data']
         var obj = JSON.parse(str)
@@ -394,7 +395,8 @@ export default {
       }).catch()
     },
     refreshAntiCrawlerStatus() {
-      antiCrawlerStatus().then(response => {
+      // console.log(this.name)
+      antiCrawlerStatus(this.name).then(response => {
         var str = response['data']
         var obj = JSON.parse(str)
         this.antiCrawlerStatu = obj.progress
@@ -409,7 +411,7 @@ export default {
       clearInterval(this.timer)
       this.timer = setInterval(this.refreshAntiCrawlerStatus, this.timeout)
       this.detailExcBtn = true
-      antiCrawler(this.organizationValue, this.collegeValue).then(response => {
+      antiCrawler(this.organizationValue, this.collegeValue,this.name).then(response => {
         // console.log(response['data'])
         var str = response['data']
         var obj = JSON.parse(str)
@@ -424,7 +426,8 @@ export default {
       }).catch()
     },
     refreshDetailMatchStatus() {
-      detailMatchStatus().then(response => {
+      // console.log(this.name)
+      detailMatchStatus(this.name).then(response => {
         var str = response['data']
         var obj = JSON.parse(str)
         this.detailMatchStatu = obj.progress
@@ -439,7 +442,7 @@ export default {
       clearInterval(this.timer)
       this.timer = setInterval(this.refreshDetailMatchStatus, this.timeout)
       this.detailMatchExcBtn = true
-      detailMatch(this.organizationValue, this.collegeValue).then(response => {
+      detailMatch(this.organizationValue, this.collegeValue,this.name).then(response => {
         // console.log(response['data'])
         var str = response['data']
         var obj = JSON.parse(str)
@@ -463,7 +466,7 @@ export default {
       // } else if (this.active === 3) {
       //
       // }
-      updateStatus().then().catch()
+      updateStatus(this.name).then().catch()
       clearInterval(this.timer)
       this.errorTableData = []
       this.detailTableData = []
@@ -471,6 +474,7 @@ export default {
       this.detailMatchTableData = []
       this.pageSize = 10
       this.currentPage = 1
+      // console.log(this.token)
     },
     // 每页条数改变时触发 选择一页显示多少行
     handleSizeChange(val) {

@@ -1,69 +1,87 @@
 import request from '@/utils/jrequest'
 import mrequest from '@/utils/request'
-export function detail(organizationName, collegeName) {
+export function detail(organizationName, collegeName, name) {
   return request({
     url: '/detail/',
     method: 'get',
     params: {
       organizationName: organizationName,
       collegeName: collegeName,
-      refresh: true
+      refresh: true,
+      name: name
     }
   })
 }
-export function detailStatus() {
+export function detailStatus(name) {
   return request({
     url: '/detail_status/',
-    method: 'get'
+    method: 'get',
+    params: {
+      name: name
+    }
   })
 }
-export function detailMatch(organizationName, collegeName) {
+export function detailMatch(organizationName, collegeName, name) {
   return request({
     url: '/detail_match/',
     method: 'get',
     params: {
       organizationName: organizationName,
       collegeName: collegeName,
-      refresh: true
+      refresh: true,
+      name: name
     }
   })
 }
-export function detailMatchStatus() {
+export function detailMatchStatus(name) {
   return request({
     url: '/detail_match_status/',
-    method: 'get'
+    method: 'get',
+    params: {
+      name: name
+    }
   })
 }
 
-export function antiCrawler(organizationName, collegeName) {
+export function antiCrawler(organizationName, collegeName, name) {
   return request({
     url: '/anti_crawler/',
     method: 'get',
     params: {
       organizationName: organizationName,
       collegeName: collegeName,
-      refresh: true
+      refresh: true,
+      name: name
     }
   })
 }
-export function antiCrawlerStatus() {
+export function antiCrawlerStatus(name) {
   return request({
     url: '/anti_crawler_status/',
-    method: 'get'
+    method: 'get',
+    params: {
+      name: name
+    }
   })
 }
 
-export function updateStatus() {
+export function updateStatus(name) {
   return request({
     url: '/update_status/',
-    method: 'get'
+    method: 'get',
+    params: {
+      name: name
+    }
   })
 }
 
-export function getErrors() {
+export function getErrors(name) {
   return request({
     url: '/errors/',
-    method: 'get'
+    method: 'get',
+    params: {
+      name: name
+    }
   })
 }
 

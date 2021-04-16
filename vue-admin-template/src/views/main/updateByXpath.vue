@@ -345,7 +345,7 @@
       </el-col>
     </el-row>
     <el-row v-if="errorTableData.length != 0" type="flex" justify="left" class="active">
-      <el-col :span="22" :offset="1">
+      <el-col>
       <el-card class="box-card">
         <div class="text item">
           <h3 style="font-weight: 300; text-align: center">错 误 日 志</h3>
@@ -463,7 +463,7 @@ export default {
         }))
     },
     fillErrorTable() {
-      getErrors().then(response => {
+      getErrors(this.name).then(response => {
         var str = response['data']
         var obj = JSON.parse(str)
         console.log(response)
@@ -476,7 +476,7 @@ export default {
       }).catch()
     },
     refreshConfigStatus() {
-      loadConfigStatus().then(response => {
+      loadConfigStatus(this.name).then(response => {
         var str = response['data']
         var obj = JSON.parse(str)
         this.configStatu = obj.progress
@@ -490,12 +490,12 @@ export default {
       clearInterval(this.timer)
       this.timer = setInterval(this.refreshConfigStatus, this.timeout)
       this.configExcBtn = true
-      loadConfig().then(response => {
+      loadConfig(this.name).then(response => {
         console.log(response)
       }).catch()
     },
     refreshCrawlerStatus() {
-      crawlerStatus().then(response => {
+      crawlerStatus(this.name).then(response => {
         var str = response['data']
         var obj = JSON.parse(str)
         this.crawlerStatu = obj.progress
@@ -510,7 +510,7 @@ export default {
       clearInterval(this.timer)
       this.timer = setInterval(this.refreshCrawlerStatus, this.timeout)
       this.crawlerExcBtn = true
-      crawler().then(response => {
+      crawler(this.name).then(response => {
         console.log(response['data'])
         var str = response['data']
         var obj = JSON.parse(str)
@@ -525,7 +525,7 @@ export default {
       }).catch()
     },
     refreshImgCrawlerStatus() {
-      imgCrawlerStatus().then(response => {
+      imgCrawlerStatus(this.name).then(response => {
         var str = response['data']
         var obj = JSON.parse(str)
         this.imgCrawlerStatu = obj.progress
@@ -540,7 +540,7 @@ export default {
       clearInterval(this.timer)
       this.timer = setInterval(this.refreshImgCrawlerStatus, this.timeout)
       this.imgCrawlerExcBtn = true
-      imgCrawler().then(response => {
+      imgCrawler(this.name).then(response => {
         console.log(response['data'])
         var str = response['data']
         var obj = JSON.parse(str)
@@ -555,7 +555,7 @@ export default {
       }).catch()
     },
     refreshDetailStatus() {
-      detailStatus().then(response => {
+      detailStatus(this.name).then(response => {
         var str = response['data']
         var obj = JSON.parse(str)
         this.detailStatu = obj.progress
@@ -570,7 +570,7 @@ export default {
       clearInterval(this.timer)
       this.timer = setInterval(this.refreshDetailStatus, this.timeout)
       this.detailExcBtn = true
-      detail().then(response => {
+      detail(this.name).then(response => {
         // console.log(response['data'])
         var str = response['data']
         var obj = JSON.parse(str)
@@ -585,7 +585,7 @@ export default {
       }).catch()
     },
     refreshAntiCrawlerStatus() {
-      antiCrawlerStatus().then(response => {
+      antiCrawlerStatus(this.name).then(response => {
         var str = response['data']
         var obj = JSON.parse(str)
         this.antiCrawlerStatu = obj.progress
@@ -600,7 +600,7 @@ export default {
       clearInterval(this.timer)
       this.timer = setInterval(this.refreshAntiCrawlerStatus, this.timeout)
       this.detailExcBtn = true
-      antiCrawler().then(response => {
+      antiCrawler(this.name).then(response => {
         // console.log(response['data'])
         var str = response['data']
         var obj = JSON.parse(str)
@@ -615,7 +615,7 @@ export default {
       }).catch()
     },
     refreshDetailMatchStatus() {
-      detailMatchStatus().then(response => {
+      detailMatchStatus(this.name).then(response => {
         var str = response['data']
         var obj = JSON.parse(str)
         this.detailMatchStatu = obj.progress
@@ -630,7 +630,7 @@ export default {
       clearInterval(this.timer)
       this.timer = setInterval(this.refreshDetailMatchStatus, this.timeout)
       this.detailMatchExcBtn = true
-      detailMatch().then(response => {
+      detailMatch(this.name).then(response => {
         console.log(response['data'])
         var str = response['data']
         var obj = JSON.parse(str)
@@ -662,7 +662,7 @@ export default {
       // } else if (this.active === 6) {
       //
       // }
-      updateStatus().then().catch()
+      updateStatus(this.name).then().catch()
       clearInterval(this.timer)
       this.errorTableData = []
       this.crawlerTableData = []

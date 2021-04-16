@@ -1,64 +1,82 @@
 import request from '@/utils/jrequest'
 import mrequest from '@/utils/request'
 
-export function detail() {
+export function detail(name) {
   return request({
     url: '/detail/',
     method: 'get',
     params: {
-      refresh: true
+      refresh: true,
+      name: name
     }
   })
 }
-export function detailStatus() {
+export function detailStatus(name) {
   return request({
     url: '/detail_status/',
-    method: 'get'
+    method: 'get',
+    params: {
+      name: name
+    }
   })
 }
-export function detailMatch() {
+export function detailMatch(name) {
   return request({
     url: '/detail_match/',
     method: 'get',
     params: {
-      refresh: true
+      refresh: true,
+      name: name
     }
   })
 }
-export function detailMatchStatus() {
+export function detailMatchStatus(name) {
   return request({
     url: '/detail_match_status/',
-    method: 'get'
+    method: 'get',
+    params: {
+      name: name
+    }
   })
 }
 
-export function antiCrawler() {
+export function antiCrawler(name) {
   return request({
     url: '/anti_crawler/',
     method: 'get',
     params: {
-      refresh: true
+      refresh: true,
+      name: name
     }
   })
 }
-export function antiCrawlerStatus() {
+export function antiCrawlerStatus(name) {
   return request({
     url: '/anti_crawler_status/',
-    method: 'get'
+    method: 'get',
+    params: {
+      name: name
+    }
   })
 }
 
-export function updateStatus() {
+export function updateStatus(name) {
   return request({
     url: '/update_status/',
-    method: 'get'
+    method: 'get',
+    params: {
+      name: name
+    }
   })
 }
 
-export function getErrors() {
+export function getErrors(name) {
   return request({
     url: '/errors/',
-    method: 'get'
+    method: 'get',
+    params: {
+      name: name
+    }
   })
 }
 

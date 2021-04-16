@@ -62,7 +62,7 @@
 
 <script>
 import { validUsername } from '@/utils/validate'
-import $ from 'jquery'
+// import $ from 'jquery'
 
 export default {
   name: 'Login',
