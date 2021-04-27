@@ -310,6 +310,7 @@ export default {
     organizationValue(newValue, oldValue) {
       getCollegeName(this.token, newValue).then(response => {
         this.colleges = response['data']
+        this.collegeValue = ''
         this.collegeList = this.colleges.map(item => {
           return { value: `${item}`, label: `${item}` }
         })

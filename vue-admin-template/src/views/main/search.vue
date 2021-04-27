@@ -155,6 +155,7 @@ export default {
       getCollegeName(this.token, newValue).then(response => {
         this.colleges = response['data']
         // console.log(response)
+        this.collegeValue = ''
         this.collegeList = this.colleges.map(item => {
           return { value: `${item}`, label: `${item}` }
         })
