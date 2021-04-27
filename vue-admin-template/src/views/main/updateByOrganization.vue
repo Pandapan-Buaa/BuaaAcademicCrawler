@@ -135,7 +135,7 @@
           @current-change="handleCurrentChange"
         />
         <el-button class="next-button" :disabled="debug && antiCrawlerNextBtn" type="primary" @click="next">下一步</el-button>
-        <el-button class="exc-button" :disabled="debug && antiCrawlerNextBtn" type="success" @click="axiosAntiCrawler">执行</el-button>
+        <el-button class="exc-button" :disabled="debug && antiCrawlerExcBtn" type="success" @click="axiosAntiCrawler">执行</el-button>
       </el-card>
     </el-row>
     <el-row v-if="active===3" type="flex" justify="left" class="active">
@@ -277,7 +277,7 @@ export default {
   data() {
     return {
       timeout: 1500,
-      debug: false,
+      debug: true,
       active: 1,
       organizationValue: '', // 选中
       organizationList: [], // select框数据
@@ -411,7 +411,7 @@ export default {
     axiosAntiCrawler() {
       clearInterval(this.timer)
       this.timer = setInterval(this.refreshAntiCrawlerStatus, this.timeout)
-      this.detailExcBtn = true
+      this.antiCrawlerExcBtn = true
       antiCrawler(this.organizationValue, this.collegeValue,this.name).then(response => {
         // console.log(response['data'])
         var str = response['data']

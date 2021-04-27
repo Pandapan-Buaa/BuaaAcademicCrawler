@@ -392,7 +392,7 @@ export default {
   data() {
     return {
       timeout: 1500,
-      debug: false,
+      debug: true,
       active: 1,
       myHeaders: { 'Authorization': 'JWT ' + getToken() },
       configStatu: 0,
@@ -599,7 +599,7 @@ export default {
     axiosAntiCrawler() {
       clearInterval(this.timer)
       this.timer = setInterval(this.refreshAntiCrawlerStatus, this.timeout)
-      this.detailExcBtn = true
+      this.antiCrawlerExcBtn = true
       antiCrawler(this.name).then(response => {
         // console.log(response['data'])
         var str = response['data']

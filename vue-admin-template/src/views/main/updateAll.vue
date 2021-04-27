@@ -114,7 +114,7 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
         />
-        <el-button class="next-button" :disabled="debug && antiCrawlerExcBtn" type="primary" @click="next">下一步</el-button>
+        <el-button class="next-button" :disabled="debug && antiCrawlerNextBtn" type="primary" @click="next">下一步</el-button>
         <el-button class="exc-button" :disabled="debug && antiCrawlerExcBtn" type="success" @click="axiosAntiCrawler">执行</el-button>
       </el-card>
     </el-row>
@@ -196,7 +196,7 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
         />
-        <el-button class="next-button" :disabled="debug && detailMatchExcBtn" type="primary" @click="next">下一步</el-button>
+        <el-button class="next-button" :disabled="debug && detailMatchNextBtn" type="primary" @click="next">下一步</el-button>
         <el-button class="exc-button" :disabled="debug && detailMatchExcBtn" type="success" @click="axiosDetailMatch">执行</el-button>
       </el-card>
     </el-row>
@@ -256,7 +256,7 @@ export default {
   data() {
     return {
       timeout: 1500,
-      debug: false,
+      debug: true,
       active: 1,
       detailStatu: 0,
       detailSize: -1,
@@ -381,7 +381,7 @@ export default {
     axiosAntiCrawler() {
       clearInterval(this.timer)
       this.timer = setInterval(this.refreshAntiCrawlerStatus, this.timeout)
-      this.detailExcBtn = true
+      this.antiCrawlerExcBtn = true
       antiCrawler(this.name).then(response => {
         // console.log(response['data'])
         var str = response['data']
