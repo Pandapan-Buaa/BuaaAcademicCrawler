@@ -79,6 +79,15 @@ export function getErrors(name) {
     }
   })
 }
+export function getErrorLog(name) {
+  return request({
+    url: '/errorlog/',
+    method: 'get',
+    params: {
+      name: name
+    }
+  })
+}
 
 export function updateScholar(id, name, organizationName, collegeName, title, email, phone) {
   return mrequest({

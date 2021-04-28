@@ -262,6 +262,7 @@
     <el-row v-if="active==6" type="flex" justify="left" class="active">
       <el-col :span="22" :offset="1">
         <el-card class="box-card">
+          <el-button  v-if=" !debug || detailMatchStatu===100" type="primary" @click="onClickDownDaily">错误日志导出</el-button>
           <div slot="header" class="clearfix">
             <h2 style="font-weight: 300; text-align: center">匹配学者信息详情</h2>
           </div>
@@ -346,30 +347,30 @@
     </el-row>
     <el-row v-if="errorTableData.length != 0" type="flex" justify="left" class="active">
       <el-col>
-      <el-card class="box-card">
-        <div class="text item">
-          <h3 style="font-weight: 300; text-align: center">错 误 日 志</h3>
-          <div>共有{{ errorTableData.length }}条数据</div>
-        </div>
-        <el-table
-          :data="errorTableData"
-          style="width: 100%"
-          max-height="300"
-        >
+        <el-card class="box-card">
+          <div class="text item">
+            <h3 style="font-weight: 300; text-align: center">错 误 日 志</h3>
+            <div>共有{{ errorTableData.length }}条数据</div>
+          </div>
+          <el-table
+            :data="errorTableData"
+            style="width: 100%"
+            max-height="300"
+          >
 
-          <el-table-column
-            fixed
-            prop="id"
-            label="id"
-            width="150"
-          />
-          <el-table-column
-            prop="error"
-            label="错误提示"
-            width="1000"
-          />
-        </el-table>
-      </el-card>
+            <el-table-column
+              fixed
+              prop="id"
+              label="id"
+              width="150"
+            />
+            <el-table-column
+              prop="error"
+              label="错误提示"
+              width="1000"
+            />
+          </el-table>
+        </el-card>
       </el-col>
     </el-row>
   </el-main>
@@ -379,7 +380,24 @@
 <script>
 import { mapGetters } from 'vuex'
 import { getToken } from '@/utils/auth'
-import { updateStatus, loadConfig, loadConfigStatus, crawler, crawlerStatus, imgCrawler, imgCrawlerStatus, detail, detailStatus, antiCrawler, antiCrawlerStatus, detailMatch, detailMatchStatus, updateScholar, getErrors } from '@/api/updateByXpath'
+import {
+  updateStatus,
+  loadConfig,
+  loadConfigStatus,
+  crawler,
+  crawlerStatus,
+  imgCrawler,
+  imgCrawlerStatus,
+  detail,
+  detailStatus,
+  antiCrawler,
+  antiCrawlerStatus,
+  detailMatch,
+  detailMatchStatus,
+  updateScholar,
+  getErrors,
+  getErrorLog
+} from '@/api/updateByXpath'
 
 export default {
   name: 'UpdateByXpath',
@@ -426,6 +444,7 @@ export default {
       antiCrawlerTableData: [],
       detailMatchTableData: [],
       errorTableData: [],
+      errorLogTableData: [],
       currentPage: 1, // 当前页码
       total: 20, // 总条数
       pageSize: 10 // 每页的数据条数
@@ -466,12 +485,25 @@ export default {
       getErrors(this.name).then(response => {
         var str = response['data']
         var obj = JSON.parse(str)
-        console.log(response)
-        console.log(str)
-        console.log('test')
+        // console.log(response)
+        // console.log(str)
+        // console.log('test')
         for (var key of Object.keys(obj)) {
           var objElement = obj[key]
           this.errorTableData.push({ id: key, error: objElement })
+        }
+      }).catch()
+    },
+    fillErrorLogTable() {
+      getErrorLog(this.name).then(response => {
+        var str = response['data']
+        var obj = JSON.parse(str)
+        // console.log(response)
+        // console.log(str)
+        // console.log('test')
+        for (var key of Object.keys(obj)) {
+          var objElement = obj[key]
+          this.errorLogTableData.push({ id: key, error: objElement })
         }
       }).catch()
     },
@@ -643,6 +675,7 @@ export default {
           // console.log(objElement)
         }
         this.fillErrorTable()
+        this.fillErrorLogTable()
       }).catch()
     },
     next() {
@@ -664,6 +697,7 @@ export default {
       // }
       updateStatus(this.name).then().catch()
       clearInterval(this.timer)
+      this.errorLogTableData = []
       this.errorTableData = []
       this.crawlerTableData = []
       this.imgCrawlerTableData = []
@@ -714,6 +748,41 @@ export default {
     handleCurrentChange(val) {
       // console.log(`当前页: ${val}`)
       this.currentPage = val
+    },
+    // txt文件导出
+    onClickDownDaily() {
+      var title = '错误日志'
+      var str = ''
+      this.errorLogTableData.forEach(item => {
+        str += 'ID:' + item.id + '   ' + 'Error:' + item.error + '\r\n'
+      })
+      var allStr = title + '\r\n' + '\r\n' + str
+      var export_blob = new Blob([allStr])
+      var save_link = document.createElement('a')
+      save_link.href = window.URL.createObjectURL(export_blob)
+      save_link.download = '错误日志' + '.txt'
+      this.fakeClick(save_link)
+    },
+    fakeClick(obj) {
+      var ev = document.createEvent('MouseEvents')
+      ev.initMouseEvent(
+        'click',
+        true,
+        false,
+        window,
+        0,
+        0,
+        0,
+        0,
+        0,
+        false,
+        false,
+        false,
+        false,
+        0,
+        null
+      )
+      obj.dispatchEvent(ev)
     }
   }
 }

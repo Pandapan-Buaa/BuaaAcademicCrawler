@@ -120,6 +120,7 @@
     </el-row>
     <el-row v-if="active===3" type="flex" justify="left" class="active">
       <el-card class="box-card">
+        <el-button  v-if=" !debug || detailMatchStatu===100" type="primary" @click="onClickDownDaily">错误日志导出</el-button>
         <div slot="header" class="clearfix">
           <h2 style="font-weight: 300; text-align: center">匹配学者信息</h2>
         </div>
@@ -241,7 +242,8 @@ import {
   detailMatchStatus,
   detailStatus, updateStatus,
   updateScholar,
-  getErrors
+  getErrors,
+  getErrorLog
 } from '@/api/updateAll'
 import { mapGetters } from 'vuex'
 
@@ -274,6 +276,7 @@ export default {
       antiCrawlerTableData: [],
       detailMatchTableData: [],
       errorTableData: [],
+      errorLogTableData: [],
       currentPage: 1, // 当前页码
       total: 20, // 总条数
       pageSize: 10 // 每页的数据条数
@@ -333,6 +336,19 @@ export default {
         for (var key of Object.keys(obj)) {
           var objElement = obj[key]
           this.errorTableData.push({ id: key, error: objElement })
+        }
+      }).catch()
+    },
+    fillErrorLogTable() {
+      getErrorLog(this.name).then(response => {
+        var str = response['data']
+        var obj = JSON.parse(str)
+        // console.log(response)
+        // console.log(str)
+        // console.log('test')
+        for (var key of Object.keys(obj)) {
+          var objElement = obj[key]
+          this.errorLogTableData.push({ id: key, error: objElement })
         }
       }).catch()
     },
@@ -425,6 +441,7 @@ export default {
           // console.log(objElement)
         }
         this.fillErrorTable()
+        this.fillErrorLogTable()
       }).catch()
     },
     next() {
@@ -440,6 +457,7 @@ export default {
       // }
       updateStatus(this.name).then().catch()
       clearInterval(this.timer)
+      this.errorLogTableData = []
       this.errorTableData = []
       this.detailTableData = []
       this.antiCrawlerTableData = []
@@ -457,6 +475,41 @@ export default {
     handleCurrentChange(val) {
       // console.log(`当前页: ${val}`)
       this.currentPage = val
+    },
+    // txt文件导出
+    onClickDownDaily() {
+      var title = '错误日志'
+      var str = ''
+      this.errorLogTableData.forEach(item => {
+        str += 'ID:' + item.id + '   ' + 'Error:' + item.error + '\r\n'
+      })
+      var allStr = title + '\r\n' + '\r\n' + str
+      var export_blob = new Blob([allStr])
+      var save_link = document.createElement('a')
+      save_link.href = window.URL.createObjectURL(export_blob)
+      save_link.download = '错误日志' + '.txt'
+      this.fakeClick(save_link)
+    },
+    fakeClick(obj) {
+      var ev = document.createEvent('MouseEvents')
+      ev.initMouseEvent(
+        'click',
+        true,
+        false,
+        window,
+        0,
+        0,
+        0,
+        0,
+        0,
+        false,
+        false,
+        false,
+        false,
+        0,
+        null
+      )
+      obj.dispatchEvent(ev)
     }
   }
 }
