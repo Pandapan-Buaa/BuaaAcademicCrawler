@@ -48,9 +48,9 @@
             >获取学者信息
             </el-button>
           </el-col>
-          <el-col>
-            <h4 style="font-weight: 300; text-align: center">学院老师数量:{{ nameList.length }}</h4>
-          </el-col>
+<!--          <el-col>-->
+<!--            <h4 style="font-weight: 300; text-align: center">学院老师数量:{{ nameList.length }}</h4>-->
+<!--          </el-col>-->
         </el-row>
       </div>
     </el-card>
@@ -93,8 +93,11 @@
                 </el-col>
               </el-row>
               <div class="intro">
+                <div class="item">
+                <p><span>个人经历：</span></p>
+                </div>
                 <p>{{ proInfo['content'] }}
-                  <el-button size="media" type="text">展开<i class="el-icon-d-arrow-right"></i></el-button>
+<!--                  <el-button size="media" type="text">展开<i class="el-icon-d-arrow-right"></i></el-button>-->
                 </p>
               </div>
             </el-col>
@@ -275,7 +278,7 @@ export default {
         imgsrc: '',
         paperCount: '',
         imgUrl: '',
-        fieldName: ''
+        fieldName: '人工智能，模式识别，机器学习，机器学习2，机器学习3'
       },
       people_info: {
         name: '张雪华',
@@ -545,16 +548,17 @@ export default {
       getZtInfo1(this.token, this.organizationValue, this.nameValue).then(response => {
         this.proInfo['paperCount'] = response['data']['content'][0]['paperCount']
         this.proInfo['imgUrl'] = response['data']['content'][0]['avg']
-        // var str = ''
-        // for (var i = 0; i < response['data']['content'][0]['webFiledVOS'].size(); i++) {
-        //   // eslint-disable-next-line eqeqeq
-        //   if (i == 0) {
-        //     str += response['data']['content'][0]['webFiledVOS'][i]['fieldName']
-        //   } else {
-        //     str += '、' + response['data']['content'][0]['webFiledVOS'][i]['fieldName']
-        //   }
-        // }
-        // this.proInfo['fieldName'] = response['data']['content'][0]['webFiledVOS'][0]['fieldName']
+        let str = ''
+        for (let i = 0; i < response['data']['content'][0]['webFiledVOS'].length; i++) {
+          // eslint-disable-next-line eqeqeq
+          if (i == 0) {
+            str += response['data']['content'][0]['webFiledVOS'][i]['fieldName']
+          } else {
+            str += '、' + response['data']['content'][0]['webFiledVOS'][i]['fieldName']
+          }
+        }
+        this.proInfo['fieldName'] = response['data']['content'][0]['webFiledVOS'][0]['fieldName']
+        this.proInfo['fieldName'] = str
         this.drawNetWork(response['links'])
       }).catch()
     },
@@ -1085,11 +1089,11 @@ h2 .right a img {
   color: #999;
 }
 
-.info-box .item p {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
+/*.info-box .item p {*/
+/*  overflow: hidden;*/
+/*  text-overflow: ellipsis;*/
+/*  white-space: nowrap;*/
+/*}*/
 
 .info-box .intro {
   line-height: 1.7;

@@ -113,35 +113,58 @@ export const constantRoutes = [
     path: '/',
     component: Layout,
     redirect: '/charts',
-    name: 'Charts',
-    meta: {
-      title: '学者数据分析',
-      icon: 'el-icon-s-custom'
-    },
+    // meta: {
+    //   title: '学者数据分析',
+    //   icon: 'el-icon-s-custom'
+    // },
     children: [
       {
         path: 'charts',
-        component: () => import('@/views/main/charts/charts'),
+        component: () => import('@/views/main/scholar'),
         name: 'Charts',
         meta: { title: '学者数据查询', noCache: true, icon: 'el-icon-menu' }
-      },
+      }
+      // ,
+      // {
+      //   path: 'charts',
+      //   component: () => import('@/views/main/charts/charts'),
+      //   name: 'Charts',
+      //   meta: { title: '学者数据查询', noCache: true, icon: 'el-icon-menu' }
+      // },
+      // {
+      //   path: 'keyboard',
+      //   component: () => import('@/views/main/charts/keyboard'),
+      //   name: 'KeyboardChart',
+      //   meta: { title: 'Keyboard Chart', noCache: true }
+      // },
+      // {
+      //   path: 'line',
+      //   component: () => import('@/views/main/charts/line'),
+      //   name: 'LineChart',
+      //   meta: { title: 'Line Chart', noCache: true }
+      // },
+      // {
+      //   path: 'mix-chart',
+      //   component: () => import('@/views/main/charts/mix-chart'),
+      //   name: 'MixChart',
+      //   meta: { title: 'Mix Chart', noCache: true }
+      // }
+    ]
+  },
+  {
+    path: '/',
+    component: Layout,
+    redirect: '/organization',
+    // meta: {
+    //   title: '学校数据分析',
+    //   icon: 'el-icon-s-custom'
+    // },
+    children: [
       {
-        path: 'keyboard',
-        component: () => import('@/views/main/charts/keyboard'),
-        name: 'KeyboardChart',
-        meta: { title: 'Keyboard Chart', noCache: true }
-      },
-      {
-        path: 'line',
-        component: () => import('@/views/main/charts/line'),
-        name: 'LineChart',
-        meta: { title: 'Line Chart', noCache: true }
-      },
-      {
-        path: 'mix-chart',
-        component: () => import('@/views/main/charts/mix-chart'),
-        name: 'MixChart',
-        meta: { title: 'Mix Chart', noCache: true }
+        path: 'organization',
+        component: () => import('@/views/main/org'),
+        name: 'orgCharts',
+        meta: { title: '学校数据分析', noCache: true, icon: 'el-icon-s-order' }
       }
     ]
   },

@@ -1,10 +1,10 @@
 <template>
   <el-main>
     <el-card class="card1">
-      <h2>学者信息查询</h2>
+      <h2 style="font-weight: 300; text-align: center">学者信息查询</h2>
       <div style="margin-bottom: 20px">
         <el-row class="search">
-          <el-col :span="4">
+          <el-col :span="4" :offset="6">
             <el-select
               v-model="organizationValue"
               filterable
@@ -40,10 +40,16 @@
             </el-select>
           </el-col>
           <el-col :span="4">
-            <el-button type="primary" icon="el-icon-search" @click="getProInfo">获取学者信息</el-button>
+            <el-button
+              type="primary"
+              style="border-radius: 10px;background-color: #38b580;border-color: #38b580"
+              icon="el-icon-search"
+              @click="getProInfo"
+            >获取学者信息
+            </el-button>
           </el-col>
           <el-col>
-            <h4>学院老师数量:{{ nameList.length }}</h4>
+            <h4 style="font-weight: 300; text-align: center">学院老师数量:{{ nameList.length }}</h4>
           </el-col>
         </el-row>
       </div>
@@ -54,25 +60,32 @@
         <!--        <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>-->
       </div>
       <div class="text item">
+
         <b>name</b>: {{ nameValue }}<br>
-        <el-divider></el-divider>
+        <el-divider/>
         <b>email</b>: {{ proInfo['email'] }} <br>
-        <el-divider></el-divider>
+        <el-divider/>
         <b>phone</b>:
         {{ proInfo['phone'] }} <br>
-        <el-divider></el-divider>
+        <el-divider/>
         <b>title</b>:
         {{ proInfo['title'] }} <br>
-        <el-divider></el-divider>
+        <el-divider/>
         <b>website</b>:
         {{ proInfo['website'] }} <br>
-        <el-divider></el-divider>
-        <b>content</b>:
-        {{ proInfo['content'] }} <br>
+        <el-divider/>
+        <b>papercount</b>
+        {{ proInfo['paperCount'] }}
+        <el-divider/>
+<!--        <b>content</b>:-->
+<!--        {{ proInfo['content'] }} <br>-->
       </div>
     </el-card>
     <el-card>
       <div id="chart" style="width:'100%',height:'3.54rem'"/>
+    </el-card>
+    <el-card>
+      <div id="NetWork" style="width:'100%'"/>
     </el-card>
   </el-main>
 </template>
@@ -83,8 +96,10 @@ import {mapGetters} from 'vuex'
 import request from '@/utils/request'
 import Highcharts from 'highcharts/highstock'
 import timeline from 'highcharts/modules/timeline.js'
+import networkgraph from 'highcharts/modules/networkgraph.js'
 
 timeline(Highcharts)
+networkgraph(Highcharts)
 
 export default {
   data() {
@@ -101,7 +116,7 @@ export default {
       total: 0,
       nameValue: '',
       nameList: [],
-      proInfo: {email: '', title: '', phone: '', website: '', content: ''}
+      proInfo: {email: '', title: '', phone: '', website: '', content: '', imgsrc: '', paperCount: ''}
     }
   },
   watch: {
@@ -152,10 +167,14 @@ export default {
         this.proInfo['website'] = response['data']['website'][0]
         this.drawChart(response['data']['specContent'])
       }).catch()
+      getZtInfo1(this.token, this.organizationValue, this.nameValue).then(response => {
+        this.proInfo['paperCount'] = response['data']['content'][0]['paperCount']
+        this.drawNetWork(response['links'])
+      }).catch()
     },
     drawChart(data) {
-      let drawdata = this.getShowData(data)
-      let metaColor = [
+      const drawdata = this.getShowData(data)
+      const metaColor = [
         '#4185F3',
         '#427CDD',
         '#406AB2',
@@ -163,7 +182,7 @@ export default {
         '#3B4A68',
         '#363C46'
       ]
-      let colorls = []
+      const colorls = []
       for (var i = 0; i < drawdata.length; i++) {
         colorls.push(metaColor[i % 6])
       }
@@ -189,8 +208,73 @@ export default {
         }]
       })
     },
+    drawNetWork(data) {
+      // Add the nodes option through an event call. We want to start with the parent
+      // item and apply separate colors to each child element, then the same color to
+      // grandchildren.
+      Highcharts.addEvent(
+        Highcharts.seriesTypes.networkgraph,
+        'afterSetOptions',
+        function (e) {
+          var colors = Highcharts.getOptions().colors
+          var i = 0
+          var nodes = {}
+          // e.options.data.forEach(function (link) {
+          //   if (link[0] === 'Proto Indo-European') {
+          //     nodes['Proto Indo-European'] = {
+          //       id: 'Proto Indo-European',
+          //       marker: {
+          //         radius: 20
+          //       }
+          //     }
+          //     nodes[link[1]] = {
+          //       id: link[1],
+          //       marker: {
+          //         radius: 10
+          //       },
+          //       color: colors[i++]
+          //     }
+          //   } else if (nodes[link[0]] && nodes[link[0]].color) {
+          //     nodes[link[1]] = {
+          //       id: link[1],
+          //       color: nodes[link[0]].color
+          //     }
+          //   }
+          // })
+          e.options.nodes = Object.keys(nodes).map(function(id) {
+            return nodes[id]
+          })
+        }
+      )
+      this.chart = Highcharts.chart('NetWork', {
+        chart: {
+          type: 'networkgraph',
+          height: '600px'
+        },
+        title: {
+          text: this.nameValue + '科研关系图'
+        },
+        // subtitle: {
+        //   text: 'A Force-Directed Network Graph in Highcharts'
+        // },
+        plotOptions: {
+          networkgraph: {
+            keys: ['from', 'to'],
+            layoutAlgorithm: {
+              enableSimulation: true
+            }
+          }
+        },
+        series: [{
+          dataLabels: {
+            enabled: true
+          },
+          data: data
+        }]
+      })
+    },
     getShowData(cont) {
-      let ls = []
+      const ls = []
       for (var i = 0; i < cont.length; i++) {
         var description = ''
         for (var j = 0; j < cont[i]['pos'].length; j++) {
@@ -279,12 +363,176 @@ export function getInfo(token, organizationName, collegeName, nameValue) {
     }
   })
 }
+
+export function getZtInfo1(token, organizationName, nameValue) {
+  return request({
+    url: '/mongo/getZhituInfo/',
+    method: 'get',
+    params: {
+      scholarName: nameValue,
+      orgName: organizationName
+    }
+  })
+}
+
 </script>
 
 <style>
-
 .card2 {
   margin-top: 30px;
   margin-bottom: 30px;
+}
+
+.el-select .el-input__inner {
+  width: 105%;
+  border-radius: 10px;
+}
+
+/*Row*/
+
+.row {
+  margin-left: -20px;
+  *zoom: 1;
+}
+
+.row:before, .row:after {
+  display: table;
+  content: "";
+}
+
+.row:after {
+  clear: both;
+}
+
+.row-fluid [class*="span"] {
+  display: block;
+  width: 100%;
+  min-height: 28px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  float: left;
+  margin-left: 2.127659574%;
+  *margin-left: 2.0744680846382977%;
+}
+
+.row-fluid [class*="span"]:first-child {
+  margin-left: 0;
+}
+
+.row-fluid input[class*="span"], .row-fluid select[class*="span"], .row-fluid textarea[class*="span"],
+.row-fluid .input-prepend [class*="span"], .row-fluid .input-append [class*="span"] {
+  display: inline-block;
+}
+
+/*Span*/
+
+.span10 {
+  width: 780px;
+  margin-left: 30%
+}
+
+.row-fluid .span10 {
+  width: 82.97872339599999%;
+  *width: 82.92553190663828%;
+}
+
+table .span10 {
+  float: none;
+  width: 764px;
+  margin-left: 0;
+}
+
+input.span10, textarea.span10,
+
+  /* Slates */
+
+.slate {
+  background: #FFF;
+  padding: 10px 20px;
+  border: 1px solid #F8F8F8;
+  margin-bottom: 20px;
+}
+
+.slate h2 {
+  font-weight: normal;
+  font-family: "Oxygen", sans-serif;
+  font-size: 18px;
+}
+
+.slate .table tbody tr:hover td,
+.slate .table tbody tr:hover th {
+  background-color: #EEE;
+}
+
+.slate .table th,
+.slate .table td {
+  border-top: none;
+  border-bottom: 1px solid #EBEBEB;
+}
+
+.slate .form-inline input,
+.slate .form-inline select {
+  margin-right: 6px;
+}
+
+/*Clearfix*/
+
+.clearfix {
+  *zoom: 1;
+}
+
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+}
+
+.clearfix:after {
+  clear: both;
+}
+
+/*Stat*/
+
+@media (max-width: 767px) {
+  .stat-column {
+    width: auto;
+    float: none;
+  }
+}
+
+.stat-column {
+  width: 30%;
+  float: left;
+  text-align: center;
+  display: block;
+  color: #999;
+  margin: 0 4%;
+  padding: 12px 2%;
+}
+
+.stat-column:hover {
+  background: #38b580;
+  color: #FFF;
+  text-decoration: none;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+}
+
+.stat-column span {
+  font-weight: normal;
+  font-family: "Oxygen", sans-serif;
+  font-size: 14px;
+  display: block;
+}
+
+.stat-column span.number {
+  font-size: 32px;
+  font-weight: normal;
+  font-family: "Oxygen", sans-serif;
+  margin: 0;
+  margin: 14px 0 10px 0;
 }
 </style>

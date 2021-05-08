@@ -5,9 +5,7 @@ from rest_framework import status
 from rest_framework.parsers import JSONParser
 from rest_framework_jwt.serializers import jwt_payload_handler, jwt_encode_handler
 from rest_framework import permissions
-from mongo.utils import getAll, getByOrganizationName, getOrganizationNameList, getCollegeNameList, \
-    getByOrganizationNameAndCollegeName, getUrlByOrganizationNameAndCollegeName, addUrl, updateUrl, \
-    getPersonNameList, getPersonInfoByName,updateScholarById
+from mongo.utils import *
 from buaaac import settings
 from django.views.decorators.csrf import csrf_exempt
 import time
@@ -17,6 +15,26 @@ import csv
 import pymongo
 import codecs
 
+class getZhituOrgInfo(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request):
+        res = {}
+        if request.GET.get('num',default=None) == None:
+            zhituOrgInfo = getZhituOrgInfoByAPI(request.GET['orgName'], request.GET['fieldId'], num=10)
+        elif request.GET.get('num') == 'all':
+            zhituOrgInfo = getZhituOrgInfoByAPI(request.GET['orgName'], request.GET['fieldId'], 'all')
+        else:
+            zhituOrgInfo = getZhituOrgInfoByAPI(request.GET['orgName'], request.GET['fieldId'], request.GET['num'])
+        # res["data"] = zhituOrgInfo['']
+        res["fields"] = zhituOrgInfo["fields"]
+        res["word_cloud"] = zhituOrgInfo["word_cloud"]
+        res["paperCount_list"] = zhituOrgInfo["paperCount_list"]
+        res["projectCount_list"] = zhituOrgInfo["projectCount_list"]
+        res["patentCount_list"] = zhituOrgInfo["patentCount_list"]
+        res["innovationIndex_list"] = zhituOrgInfo["innovationIndex_list"]
+        res["code"] = 20000
+        return Response(res)
 
 class getAllInfo(APIView):
     permission_classes = (permissions.IsAuthenticated,)
@@ -106,10 +124,15 @@ class getPersonName(APIView):
 
     def get(self, request):
         res = {}
-        res["data"] = getPersonNameList(request.GET['database'], request.GET['organizationName'], \
-            request.GET['collegeName'])
+        if request.GET.get('collegeName',default=None) == None:
+            res["data"] = getPersonNameListByOrg(request.GET['database'], request.GET['organizationName'])
+            res["statistic_data"] = getPersonListInfo(res["data"], request.GET['organizationName'])
+        else:
+            res["data"] = getPersonNameListByCollege(request.GET['database'], request.GET['organizationName'], \
+                request.GET['collegeName'])
         res["code"] = 20000
         return Response(res)
+
 
 
 class getPersonInfo(APIView):
@@ -121,6 +144,7 @@ class getPersonInfo(APIView):
             request.GET['collegeName'], request.GET['name'])
         res["code"] = 20000
         return Response(res)
+
 
 
 class exportAsCSV(APIView):
@@ -190,3 +214,27 @@ class updateById(APIView):
         data["id"] = request.GET['id']
         data["code"] = 20000
         return Response(data,status=status.HTTP_200_OK)
+
+class getZhituInfo(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request):
+        res = {}
+        zhituInfo = getZhituInfoByAPI(request.GET['scholarName'], request.GET['orgName'])
+        res["data"] = zhituInfo[0]
+        scholarId = zhituInfo[1]
+        res["links"] = getZhituRelationByAPI(scholarId)[1]
+        res["relationData"] = getZhituRelationByAPI(scholarId)[0]
+        res["code"] = 20000
+        return Response(res)
+
+
+class getZhituRelation(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request):
+        res = {}
+        res["links"] = getZhituRelationByAPI(request.GET['id'])[1]
+        res["data"] = getZhituRelationByAPI(request.GET['id'])[0]
+        res["code"] = 20000
+        return Response(res)
