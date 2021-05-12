@@ -22,7 +22,7 @@
       <sourceFolder url="file://$MODULE_DIR$/mongo" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/crawler" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.7 (django)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Remote Python 3.7.0 (sftp://fengzc@175.24.63.174:50104/home/fengzc/.conda/envs/fzc_env/bin/python3.7)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="TemplatesService">

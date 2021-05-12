@@ -1,0 +1,41 @@
+import Vue from 'vue'
+import {
+  Container,
+  Row,
+  Col,
+  Main,
+  Header,
+  Button,
+  Select,
+  Tabs,
+  TabPane,
+  Steps,
+  Step,
+  Tag,
+  Pagination,
+  Input,
+  Form,
+  FormItem,
+  DatePicker,
+  Divider,
+  Popconfirm
+} from 'element-ui'
+Vue.use(Container)
+Vue.use(Header)
+Vue.use(Button)
+Vue.use(Select)
+Vue.use(Main)
+Vue.use(Row)
+Vue.use(Col)
+Vue.use(Tabs)
+Vue.use(TabPane)
+Vue.use(Steps)
+Vue.use(Step)
+Vue.use(Tag)
+Vue.use(Pagination)
+Vue.use(Input)
+Vue.use(Form)
+Vue.use(FormItem)
+Vue.use(DatePicker)
+Vue.use(Divider)
+Vue.use(Popconfirm)

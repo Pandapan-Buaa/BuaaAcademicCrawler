@@ -11,7 +11,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 import datetime
 import os
-from utils import db
+# from utils import db
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -53,7 +54,6 @@ MIDDLEWARE = [
 
 ]
 
-
 CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'buaaac.urls'
@@ -74,7 +74,6 @@ TEMPLATES = [
     },
 ]
 
-
 # Add for vuejs
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "vue-admin-template/dist/static"),
@@ -93,10 +92,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'buaaac',
-        'USER': db.USER,
-        'PASSWORD': db.PASSWORD,
-        'HOST': '127.0.0.1',
-    }
+        'USER': 'root',
+        'PASSWORD': '1325muller',
+    'HOST': '127.0.0.1',
+}
 }
 
 # Password validation
@@ -135,7 +134,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         # 'rest_framework.permissions.IsAuthenticated',
@@ -165,32 +163,31 @@ CORS_ALLOW_CREDENTIALS = True  # 指明在跨域访问中，后端是否支持�
 
 # 允许的请求方式
 CORS_ALLOW_METHODS = (
- 'DELETE',
- 'GET',
- 'OPTIONS',
- 'PATCH',
- 'POST',
- 'PUT',
- 'VIEW',
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+    'VIEW',
 )
 # 允许的请求头
 CORS_ALLOW_HEADERS = (
- 'XMLHttpRequest',
- 'X_FILENAME',
- 'accept-encoding',
- 'authorization',
- 'content-type',
- 'dnt',
- 'origin',
- 'user-agent',
- 'x-csrftoken',
- 'x-requested-with',
- 'Pragma',
+    'XMLHttpRequest',
+    'X_FILENAME',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+    'Pragma',
 )
-
 
 FONT_DIR = os.path.dirname(BASE_DIR) + r"\buaaac\vue-admin-template\dist\static"
 MEDIA_ROOT = os.path.join(FONT_DIR, 'media')
 MEDIA_URL = '/media/'
 X_FRAME_OPTIONS = 'ALLOWALL'
-XS_SHARING_ALLOWED_METHODS = ['POST','GET','OPTIONS', 'PUT', 'DELETE']
+XS_SHARING_ALLOWED_METHODS = ['POST', 'GET', 'OPTIONS', 'PUT', 'DELETE']
