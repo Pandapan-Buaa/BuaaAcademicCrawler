@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 import datetime
 import os
-from utils import db
+# from utils import db
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -93,8 +93,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'buaaac',
-        'USER': db.USER,
-        'PASSWORD': db.PASSWORD,
+        'USER': 'root',
+        'PASSWORD': '1325muller',
         'HOST': '127.0.0.1',
     }
 }
