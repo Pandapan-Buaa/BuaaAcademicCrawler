@@ -158,3 +158,13 @@ export function updateScholar(id, name, organizationName, collegeName, title, em
     }
   })
 }
+
+export function saveTozhitu(name) {
+  return request({
+    url: '/saveTozhitu/',
+    method: 'get',
+    params: {
+      name: name
+    }
+  })
+}

@@ -101,6 +101,17 @@ export const constantRoutes = [
   {
     path: '/',
     component: Layout,
+    redirect: '/multiIdScholars',
+    children: [{
+      path: 'multiIdScholars',
+      name: 'multiIdScholars',
+      component: () => import('@/views/main/multiIdScholar'),
+      meta: { title: '重名学者人工筛选', icon: 'el-icon-coordinate' }
+    }]
+  },
+  {
+    path: '/',
+    component: Layout,
     redirect: '/search',
     children: [{
       path: 'search',

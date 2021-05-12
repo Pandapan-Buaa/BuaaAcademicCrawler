@@ -15,4 +15,6 @@ urlpatterns = [
     url(r'^exportCsv/$', views.exportAsCSV.as_view()),
     url(r'^updateScholarById/$', views.updateById.as_view()),
     url(r'^getZhituOrgInfo/$', views.getZhituOrgInfo.as_view()),
+    url(r'^getMultiIdScholars/$', views.getMultiIdScholars.as_view()),
+    url(r'^updateMultiIdScholarById/$',views.updateMultiIdScholarById.as_view())
 ]

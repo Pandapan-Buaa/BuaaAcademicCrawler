@@ -238,3 +238,24 @@ class getZhituRelation(APIView):
         res["data"] = getZhituRelationByAPI(request.GET['id'])[0]
         res["code"] = 20000
         return Response(res)
+
+class getMultiIdScholars(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request):
+        res = {}
+        res["data"] = getMultiIdScholarList()
+        res["code"] = 20000
+        return Response(res)
+
+class updateMultiIdScholarById(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request):
+        data = {
+            "scholarId":request.GET["zhituId"]
+        }
+        updateScholarById(request.GET['id'],data)
+        data["id"] = request.GET['id']
+        data["code"] = 20000
+        return Response(data,status=status.HTTP_200_OK)

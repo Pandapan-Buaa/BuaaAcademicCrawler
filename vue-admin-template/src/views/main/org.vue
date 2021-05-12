@@ -5,7 +5,7 @@
 
     <el-card class="card1">
       <h2 style="font-weight: 300; text-align: center">学校数据分析</h2>
-      <el-divider></el-divider>
+      <el-divider />
       <div style="margin-bottom: 20px">
         <el-row class="search">
           <el-col :span="4" :offset="8">
@@ -35,36 +35,40 @@
             </el-select>
           </el-col>
           <el-col :span="4">
-            <el-button type="primary" style="border-radius: 10px;background-color: #38b580;border-color: #38b580"
-                       icon="el-icon-search" @click="searchScholarCount">搜索
+            <el-button
+              type="primary"
+              style="border-radius: 10px;background-color: #38b580;border-color: #38b580"
+              icon="el-icon-search"
+              @click="searchScholarCount"
+            >搜索
             </el-button>
           </el-col>
         </el-row>
-        <br/>
-        <br/>
+        <br>
+        <br>
         <div style="text-align: center">
           <h1>{{ organizationValue }}数据可视化</h1>
         </div>
         <el-row>
           <el-col :span="6">
-            <div id="Bar" style="width:'1000px',height:'3.54rem'"/>
+            <div id="Bar" style="width:'1000px',height:'3.54rem'" />
           </el-col>
           <el-col :span="6">
-            <div id="Bar1" style="width:'1000px',height:'3.54rem'"/>
+            <div id="Bar1" style="width:'1000px',height:'3.54rem'" />
           </el-col>
           <el-col :span="6">
-            <div id="Bar2" style="width:'1000px',height:'3.54rem'"/>
+            <div id="Bar2" style="width:'1000px',height:'3.54rem'" />
           </el-col>
           <el-col :span="6">
-            <div id="Bar3" style="width:'1000px',height:'3.54rem'"/>
+            <div id="Bar3" style="width:'1000px',height:'3.54rem'" />
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
-            <div id="WordCloud"/>
+            <div id="WordCloud" />
           </el-col>
           <el-col :span="12">
-            <div id="Pie"/>
+            <div id="Pie" />
           </el-col>
         </el-row>
       </div>
@@ -73,10 +77,10 @@
 </template>
 
 <script>
-import {getOrganazationName, searchOrganizationData, getAllData, getCollegeName} from '@/api/search'
-import {mapGetters} from 'vuex'
-import Highcharts from 'highcharts/highstock';
-import request from "@/utils/request";
+import { getOrganazationName, searchOrganizationData, getAllData, getCollegeName } from '@/api/search'
+import { mapGetters } from 'vuex'
+import Highcharts from 'highcharts/highstock'
+import request from '@/utils/request'
 import wordcloud from 'highcharts/modules/wordcloud.js'
 
 wordcloud(Highcharts)
@@ -138,7 +142,7 @@ export default {
       // console.log(this.states)
       // console.log(this.value.length)
       this.organizationList = this.organizations.map(item => {
-        return {value: `${item}`, label: `${item}`}
+        return { value: `${item}`, label: `${item}` }
       })
       // console.log(this.list)
     }).catch()
@@ -202,7 +206,7 @@ export default {
         xAxis: {
           type: 'category',
           labels: {
-            rotation: -45  // 设置轴标签旋转角度
+            rotation: -45 // 设置轴标签旋转角度
           }
         },
         yAxis: {
@@ -245,7 +249,7 @@ export default {
         xAxis: {
           type: 'category',
           labels: {
-            rotation: -45  // 设置轴标签旋转角度
+            rotation: -45 // 设置轴标签旋转角度
           }
         },
         yAxis: {
@@ -288,7 +292,7 @@ export default {
         xAxis: {
           type: 'category',
           labels: {
-            rotation: -45  // 设置轴标签旋转角度
+            rotation: -45 // 设置轴标签旋转角度
           }
         },
         yAxis: {
@@ -331,7 +335,7 @@ export default {
         xAxis: {
           type: 'category',
           labels: {
-            rotation: -45  // 设置轴标签旋转角度
+            rotation: -45 // 设置轴标签旋转角度
           }
         },
         yAxis: {

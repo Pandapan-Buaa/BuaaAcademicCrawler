@@ -120,7 +120,7 @@
     </el-row>
     <el-row v-if="active===3" type="flex" justify="left" class="active">
       <el-card class="box-card">
-        <el-button  v-if=" !debug || detailMatchStatu===100" type="primary" @click="onClickDownDaily">错误日志导出</el-button>
+        <el-button v-if=" !debug || detailMatchStatu===100" type="primary" @click="onClickDownDaily">错误日志导出</el-button>
         <div slot="header" class="clearfix">
           <h2 style="font-weight: 300; text-align: center">匹配学者信息</h2>
         </div>
@@ -180,7 +180,7 @@
           </el-table-column>
           <el-table-column label="操作">
             <template scope="scope">
-              <el-button type="primary" size="small" @click="handleUpdate(scope.$index, scope.row)">上传修改</el-button>
+              <el-button type="primary" size="small" @click="handleUpdate(scope.$index, scope.row)">上传</el-button>
               <!--              <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>-->
             </template>
           </el-table-column>
@@ -197,7 +197,8 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
         />
-        <el-button class="next-button" :disabled="debug && detailMatchNextBtn" type="primary" @click="next">下一步</el-button>
+        <el-button v-if="finishsave == false" class="next-button" :disabled="debug && detailMatchNextBtn" type="primary" @click="saveScholar">入库</el-button>
+        <el-button v-if="finishsave == true" class="next-button"  type="primary" @click="back">返回</el-button>
         <el-button class="exc-button" :disabled="debug && detailMatchExcBtn" type="success" @click="axiosDetailMatch">执行</el-button>
       </el-card>
     </el-row>
@@ -243,7 +244,8 @@ import {
   detailStatus, updateStatus,
   updateScholar,
   getErrors,
-  getErrorLog
+  getErrorLog,
+  saveTozhitu
 } from '@/api/updateAll'
 import { mapGetters } from 'vuex'
 
@@ -259,6 +261,7 @@ export default {
     return {
       timeout: 1500,
       debug: true,
+      finishsave: false,
       active: 1,
       detailStatu: 0,
       detailSize: -1,
@@ -305,6 +308,19 @@ export default {
     clearInterval(this.timer)
   },
   methods: {
+    back() {
+      location.reload()
+    },
+    saveScholar() {
+      saveTozhitu(this.name).then(response => {
+        this.$message({
+          message: '入库成功,共' + response['data'] + '人',
+          type: 'success'
+        })
+      }
+      ).catch()
+      this.finishsave = true
+    },
     handleCurrent(row, event, column) {
       // console.log(row, event, column)
     },

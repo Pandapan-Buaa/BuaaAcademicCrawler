@@ -1,7 +1,7 @@
 import pymongo
 import time
 import csv
-from buaaac import settings
+# from buaaac import settings
 from mongo import hanlp_process
 import requests
 from functools import cmp_to_key
@@ -423,3 +423,22 @@ def simplifyContent(content):
     newContent = newContent.strip().strip("：").strip(":").strip()
     print(newContent)
     return newContent
+
+
+def getMultiIdScholarList():
+    myclient = pymongo.MongoClient("mongodb://localhost:27017")
+    dblist = myclient.list_database_names()
+    if "cloud_academic" not in dblist:
+        print("数据库不存在！")
+        return 0
+    mydb = myclient["cloud_academic"]
+    collist = mydb.list_collection_names()
+    count = 0
+    for str in collist:
+        if (str == 'scholar_multiid'):
+            mycol = mydb[str]
+        else:
+            continue
+        x = list(mycol.find())
+    myclient.close()
+    return x
