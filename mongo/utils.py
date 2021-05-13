@@ -147,30 +147,34 @@ def getPersonInfoByName(database, organizationName, collegeName, personName):
             continue
         content = mycol.find({"organizationName": organizationName, "collegeName": collegeName, \
                               "name": personName}).distinct('content')
-        pos_time_match_list = hanlp_process.getContent(content[0])
-        specContent = pos_time_match_list[0]
-        pkuStdContent = pos_time_match_list[1]
-        pkuPosContent = pos_time_match_list[2]
-        res['content'] = [simplifyContent(content[0])]
-        # simplifyContent(content[0])
-        # print(content)
-        res['specContent'] = specContent
-        res['pkuPosContent'] = pkuPosContent
-        res['pkuTimePosContent'] = pkuStdContent
-        res['departmentName'] = mycol.find({"organizationName": organizationName, "collegeName": collegeName, \
-                                            "name": personName}).distinct('departmentName')
-        res['mainPage'] = mycol.find({"organizationName": organizationName, "collegeName": collegeName, \
-                                      "name": personName}).distinct('mainPage')
-        res['match'] = mycol.find({"organizationName": organizationName, "collegeName": collegeName, \
-                                   "name": personName}).distinct('match')
-        res['title'] = mycol.find({"organizationName": organizationName, "collegeName": collegeName, \
-                                   "name": personName}).distinct('title')
-        res['phone'] = mycol.find({"organizationName": organizationName, "collegeName": collegeName, \
-                                   "name": personName}).distinct('phone')
-        res['email'] = mycol.find({"organizationName": organizationName, "collegeName": collegeName, \
-                                   "name": personName}).distinct('email')
-        res['website'] = mycol.find({"organizationName": organizationName, "collegeName": collegeName, \
-                                     "name": personName}).distinct('website')
+        try:
+            pos_time_match_list = hanlp_process.getContent(content[0])
+            specContent = pos_time_match_list[0]
+            pkuStdContent = pos_time_match_list[1]
+            pkuPosContent = pos_time_match_list[2]
+            res['code'] = 20000
+            res['content'] = [simplifyContent(content[0])]
+            # simplifyContent(content[0])
+            # print(content)
+            res['specContent'] = specContent
+            res['pkuPosContent'] = pkuPosContent
+            res['pkuTimePosContent'] = pkuStdContent
+            res['departmentName'] = mycol.find({"organizationName": organizationName, "collegeName": collegeName, \
+                                                "name": personName}).distinct('departmentName')
+            res['mainPage'] = mycol.find({"organizationName": organizationName, "collegeName": collegeName, \
+                                        "name": personName}).distinct('mainPage')
+            res['match'] = mycol.find({"organizationName": organizationName, "collegeName": collegeName, \
+                                    "name": personName}).distinct('match')
+            res['title'] = mycol.find({"organizationName": organizationName, "collegeName": collegeName, \
+                                    "name": personName}).distinct('title')
+            res['phone'] = mycol.find({"organizationName": organizationName, "collegeName": collegeName, \
+                                    "name": personName}).distinct('phone')
+            res['email'] = mycol.find({"organizationName": organizationName, "collegeName": collegeName, \
+                                    "name": personName}).distinct('email')
+            res['website'] = mycol.find({"organizationName": organizationName, "collegeName": collegeName, \
+                                        "name": personName}).distinct('website')
+        except Exception:
+            res['code'] = 404
         myclient.close()
         return res
 

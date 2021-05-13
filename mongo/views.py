@@ -15,12 +15,13 @@ import csv
 import pymongo
 import codecs
 
+
 class getZhituOrgInfo(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request):
         res = {}
-        if request.GET.get('num',default=None) == None:
+        if request.GET.get('num', default=None) == None:
             zhituOrgInfo = getZhituOrgInfoByAPI(request.GET['orgName'], request.GET['fieldId'], num=10)
         elif request.GET.get('num') == 'all':
             zhituOrgInfo = getZhituOrgInfoByAPI(request.GET['orgName'], request.GET['fieldId'], 'all')
@@ -35,6 +36,7 @@ class getZhituOrgInfo(APIView):
         res["innovationIndex_list"] = zhituOrgInfo["innovationIndex_list"]
         res["code"] = 20000
         return Response(res)
+
 
 class getAllInfo(APIView):
     permission_classes = (permissions.IsAuthenticated,)
@@ -124,15 +126,14 @@ class getPersonName(APIView):
 
     def get(self, request):
         res = {}
-        if request.GET.get('collegeName',default=None) == None:
+        if request.GET.get('collegeName', default=None) == None:
             res["data"] = getPersonNameListByOrg(request.GET['database'], request.GET['organizationName'])
             res["statistic_data"] = getPersonListInfo(res["data"], request.GET['organizationName'])
         else:
             res["data"] = getPersonNameListByCollege(request.GET['database'], request.GET['organizationName'], \
-                request.GET['collegeName'])
+                                                     request.GET['collegeName'])
         res["code"] = 20000
         return Response(res)
-
 
 
 class getPersonInfo(APIView):
@@ -141,10 +142,11 @@ class getPersonInfo(APIView):
     def get(self, request):
         res = {}
         res["data"] = getPersonInfoByName(request.GET['database'], request.GET['organizationName'], \
-            request.GET['collegeName'], request.GET['name'])
-        res["code"] = 20000
+                                          request.GET['collegeName'], request.GET['name'])
+        res["code"] = res["data"]["code"]
+        if res["code"] == 404:
+            res["data"] = "对不起，我们暂时还未收录这条数据"
         return Response(res)
-
 
 
 class exportAsCSV(APIView):
@@ -203,17 +205,18 @@ class updateById(APIView):
 
     def post(self, request):
         data = {
-            "name":request.GET["name"],
-            "title":request.GET['title'],
-            'organizationName':request.GET['organizationName'],
-            'collegeName':request.GET['collegeName'],
-            "email":request.GET['email'],
-            "phone":request.GET['phone']
+            "name": request.GET["name"],
+            "title": request.GET['title'],
+            'organizationName': request.GET['organizationName'],
+            'collegeName': request.GET['collegeName'],
+            "email": request.GET['email'],
+            "phone": request.GET['phone']
         }
-        updateScholarById(request.GET['id'],data)
+        updateScholarById(request.GET['id'], data)
         data["id"] = request.GET['id']
         data["code"] = 20000
-        return Response(data,status=status.HTTP_200_OK)
+        return Response(data, status=status.HTTP_200_OK)
+
 
 class getZhituInfo(APIView):
     permission_classes = (permissions.IsAuthenticated,)
@@ -239,6 +242,7 @@ class getZhituRelation(APIView):
         res["code"] = 20000
         return Response(res)
 
+
 class getMultiIdScholars(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
@@ -248,14 +252,15 @@ class getMultiIdScholars(APIView):
         res["code"] = 20000
         return Response(res)
 
+
 class updateMultiIdScholarById(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def post(self, request):
         data = {
-            "scholarId":request.GET["zhituId"]
+            "scholarId": request.GET["zhituId"]
         }
-        updateScholarById(request.GET['id'],data)
+        updateScholarById(request.GET['id'], data)
         data["id"] = request.GET['id']
         data["code"] = 20000
-        return Response(data,status=status.HTTP_200_OK)
+        return Response(data, status=status.HTTP_200_OK)

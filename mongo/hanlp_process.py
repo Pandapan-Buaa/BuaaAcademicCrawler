@@ -180,4 +180,4 @@ def getContent(string):
     # print("mergeList:\n", mergePosAndTime())
     return [sortMsra, mergePosAndTime(), getPkuPosList()]
 
-# print(getContent(string1))
+print(getContent(string1))
