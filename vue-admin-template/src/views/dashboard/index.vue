@@ -8,7 +8,7 @@
           <Cards colors='#FFA333' name='今日爬取数量' :number='10' ionc='DealSvg'  />
           <Cards colors='#A155E8' name='昨日爬取数量' :number='120' ionc='DealSvg'  />
           <Cards colors='#6D91FF' name='本月爬取数量' :number='1405' ionc='DealSvg'  />
-          <Cards colors='#A233A2' name='累计爬取量(年)' :number='110' ionc='DealSvg'  />
+          <Cards colors='#A233A2' name='累计爬取量(年)' :number='7500000' ionc='DealSvg'  />
         </el-row>
       </div>
     </div>
@@ -100,6 +100,4 @@ export default {
   left: 25px;
   top: -15px;
 }
-
-
 </style>
