@@ -321,10 +321,10 @@
                 <el-input v-model="scope.row.phone" size="small" placeholder="请输入内容" @change="handleEdit(scope.$index, scope.row)" /> <span>{{ scope.row.phone }}</span>
               </template>
             </el-table-column>
-            <el-table-column label="操作">
+            <el-table-column label="操作" width="150">
               <template scope="scope">
                 <el-button type="primary" size="small" @click="handleUpdate(scope.$index, scope.row)">上传</el-button>
-                <!--              <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>-->
+                <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -398,7 +398,8 @@ import {
   updateScholar,
   getErrors,
   getErrorLog,
-  saveTozhitu
+  saveTozhitu,
+  deleteScholar
 } from '@/api/updateByXpath'
 
 export default {
@@ -496,6 +497,20 @@ export default {
           message: '修改成功 ' + id + ' ' + name,
           type: 'success'
         }))
+    },
+    handleDelete(index, row) {
+      console.log(row)
+      var id = row.mongoid
+      var name = row.name
+
+      deleteScholar(id
+      ).then(
+        this.detailMatchTableData.splice(index, 1),
+        this.$message({
+          message: '删除成功 ' + id + ' ' + name,
+          type: 'success'
+        })
+      )
     },
     fillErrorTable() {
       getErrors(this.name).then(response => {

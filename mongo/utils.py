@@ -459,3 +459,19 @@ def getMultiIdScholarList():
         x = list(mycol.find())
     myclient.close()
     return x
+
+
+def deleteScholarById(id):
+    myclient = pymongo.MongoClient("mongodb://localhost:27017")
+    dblist = myclient.list_database_names()
+    if "cloud_academic" not in dblist:
+        print("数据库不存在！")
+        return 0
+    mydb = myclient["cloud_academic"]
+    collist = mydb.list_collection_names()
+    for str in collist:
+        if (str == 'scholar_temp'):
+            mycol = mydb[str]
+            mycol.delete_one({"_id": id})
+        else:
+            continue

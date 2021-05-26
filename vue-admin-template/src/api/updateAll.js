@@ -114,3 +114,12 @@ export function saveTozhitu(name) {
     }
   })
 }
+export function deleteScholar(id) {
+  return mrequest({
+    url: '/mongo/deleteScholar/',
+    method: 'post',
+    params: {
+      id: id
+    }
+  })
+}

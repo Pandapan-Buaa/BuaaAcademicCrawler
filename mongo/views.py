@@ -264,3 +264,13 @@ class updateMultiIdScholarById(APIView):
         data["id"] = request.GET['id']
         data["code"] = 20000
         return Response(data, status=status.HTTP_200_OK)
+
+class deleteScholar(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request):
+        data = {}
+        deleteScholarById(request.GET['id'])
+        data["id"] = request.GET['id']
+        data["code"] = 20000
+        return Response(data, status=status.HTTP_200_OK)
